@@ -20,6 +20,9 @@ namespace Domain.Entities
 		public string? Email { get; set; }
 		public string? PhoneNumber { get; set; }
 		public UserType UserType { get; set; }
+		public int CompanyId { get; set; }
+		public Company Company { get; set; }
+		public DateTime DateCreated { get; set; } = DateTime.UtcNow;
 
 
 		public override string ToString()

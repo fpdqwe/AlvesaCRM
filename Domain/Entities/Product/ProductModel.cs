@@ -13,7 +13,8 @@ namespace Domain.Entities.Product
         public decimal? Price { get; set; }
         public decimal? ProductionPrice { get; set; }
         public List<TechSpec> TechSpecs { get; set; } = new List<TechSpec>();
-        public List<User> Customers { get; set; } = new List<User>();
+        public int CompanyId { get; set; }
+        public Company Company { get; set; }
 
 		public int GetPrimaryKey()
 		{

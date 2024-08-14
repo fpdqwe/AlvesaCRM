@@ -5,14 +5,18 @@ namespace DAL
 {
 	public class ContextManager : IContextManager
 	{
-		private readonly string _connectionString = "Host=localhost;Username=postgres;Password=admin;Database=Alvesa";
-        public ContextManager(string connectionString)
+		private readonly string _connectionString = "Host=localhost;Username=postgres;Password=YCZ1J7_Ww-;Database=Alvesa";
+        public ContextManager(/*string connectionString*/)
         {
-            _connectionString = connectionString;
+            //_connectionString = connectionString;
         }
         public ApplicationDbContext CreateDatabaseContext()
 		{
-			return new ApplicationDbContext(_connectionString);
+			var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+			var options = optionsBuilder
+				.UseNpgsql(_connectionString)
+				.Options;
+			return new ApplicationDbContext(options);
 		}
 	}
 }

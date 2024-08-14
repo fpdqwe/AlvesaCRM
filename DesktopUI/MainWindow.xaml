@@ -4,10 +4,93 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DesktopUI"
+        xmlns:views="clr-namespace:DesktopUI.Views"
+        xmlns:vm="clr-namespace:DesktopUI.ViewModels"
+        xmlns:utilities="clr-namespace:DesktopUI.Utilities"
         mc:Ignorable="d"
         WindowState="Maximized"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Width="1500" Height="1000">
+    <Window.Resources>
+        <utilities:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <DataTemplate DataType="{x:Type vm:AuthVM}">
+            <views:AuthView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MainPageVM}">
+            <views:MainPage/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ProductVM}">
+            <views:ProductView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:CompanyVM}">
+            <views:CompanyView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:EmployeeVM}">
+            <views:EmployeeView/>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <Window.DataContext>
+        <vm:NavigationVM/>
+    </Window.DataContext>
+    
+    <Grid Background="{StaticResource SCB-DarkBckground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="{Binding NavBarWidth}"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="NavbarContainer"
+              Grid.Column="0"
+              Background="{StaticResource SCB-Main}"
+              Visibility="{Binding IsNavBarVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <StackPanel Orientation="Vertical"
+                        VerticalAlignment="Center">
+                
+                <TextBlock Style="{StaticResource ArticleText}"
+                           Text="{Binding CurrentUser.FirstName}"
+                           Margin="5"/>
+                
+                <TextBlock Style="{StaticResource ArticleText}"
+                           FontSize="18"
+                           Text="{Binding CurrentUser.Company.Type}"
+                           Margin="5"/>
+                
+                <RadioButton Style="{StaticResource NavBtn}" 
+                             Command="{Binding OpenMainCommand}">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Главная"/>
+                </RadioButton>
+                
+                <RadioButton Style="{StaticResource NavBtn}"
+                             Command="{Binding OpenCompanyMenuCommand}">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Моя компания"/>
+                </RadioButton>
+
+                <RadioButton Style="{StaticResource NavBtn}"
+                             Command="{Binding OpenEmployeeCommand}">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Сотрудники"/>
+                </RadioButton>
+
+                
+
+                <RadioButton Style="{StaticResource NavBtn}"
+                             Command="{Binding OpenProductsCommand}">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Модели"/>
+                </RadioButton>
+            </StackPanel>
+            
+        </Grid>
+        <Grid Name="PageContainer"
+              Grid.Column="1">
+            <ContentControl x:Name="CurrentPage"
+                            Content="{Binding CurrentVM}"
+                            >
+
+            </ContentControl>
+        </Grid>
         
     </Grid>
 </Window>

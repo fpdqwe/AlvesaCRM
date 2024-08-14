@@ -26,6 +26,7 @@ namespace DAL.Repository
                 context.Set<T>().Add(entity);
                 context.SaveChanges();
             }
+            
             return entity;
         }
         public void Delete(T entity)

@@ -22,5 +22,7 @@ namespace DAL.Repository
                 return db.Set<User>().Count(u => u.Login == login) > 0;
             }
         }
+
+        
     }
 }
