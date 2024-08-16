@@ -27,7 +27,7 @@ namespace DesktopUI.ViewModels
         public ProductVM()
         {
             _productModel = new ProductModel();
-			_products = new ObservableCollection<Product.ProductModel>(_productModel.ProductRepository.GetLast(20).Result);
+			_productModel.ProductsUpdated += OnProductsUpdated;
 
 			AddProductCommand = new RelayCommand(AddProduct);
 			UpdateProductCommand = new RelayCommand(UpdateProduct);
@@ -65,6 +65,11 @@ namespace DesktopUI.ViewModels
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(prop));
+		}
+
+		private void OnProductsUpdated(List<Product.ProductModel> products)
+		{
+			ProductModels = new ObservableCollection<Product.ProductModel>(products);
 		}
 	}
 }
