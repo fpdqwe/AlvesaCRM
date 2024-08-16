@@ -17,24 +17,24 @@ namespace DesktopUI.Models
 			_companyRepository = new CompanyRepository(contextManager);
         }
 
-		public bool TryAuthUser(User credentials)
+		public async Task<bool> TryAuthUser(User credentials)
 		{
-			var user = _userRepository.FindByLogin(credentials.Login);
+			var user = await _userRepository.FindByLogin(credentials.Login);
 			if (user == null)
 			{
 				credentials.Company = CreateNewCompany(credentials);
 				//_companyRepository.Add(credentials.Company);
 				
-				_userRepository.Add(credentials);
+				await _userRepository.Add(credentials);
 				AuthService.LoginSuccess(credentials);
 				return true;
 			}
 			else return false;
 		}
 		
-		public bool TryLogIn(User credentials)
+		public async Task<bool> TryLogIn(User credentials)
 		{
-			var existingUser = _userRepository.FindByLogin(credentials.Login);
+			var existingUser = await _userRepository.FindByLogin(credentials.Login);
 			if(existingUser != null && existingUser.Password == credentials.Password)
 			{
 				AuthService.LoginSuccess(existingUser);

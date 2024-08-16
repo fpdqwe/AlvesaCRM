@@ -5,7 +5,7 @@ namespace DAL
 {
 	public class ContextManager : IContextManager
 	{
-		private readonly string _connectionString = "Host=localhost;Username=postgres;Password=YCZ1J7_Ww-;Database=Alvesa";
+		private readonly string _connectionString = "Host=localhost;Username=postgres;Password=admin;Database=Alvesa";
         public ContextManager(/*string connectionString*/)
         {
             //_connectionString = connectionString;

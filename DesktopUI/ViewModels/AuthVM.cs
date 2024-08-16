@@ -57,9 +57,9 @@ namespace DesktopUI.ViewModels
 			get
 			{
 				return _authCommand ??
-					(_authCommand = new RelayCommand(obj =>
+					(_authCommand = new RelayCommand(async obj =>
 					{
-						if (_authModel.TryAuthUser(new User { Login = Login, Password = Password }))
+						if (await _authModel.TryAuthUser(new User { Login = Login, Password = Password }))
 						{
 							Exception = "Учётная запись создана!";
 						}
@@ -72,9 +72,9 @@ namespace DesktopUI.ViewModels
 			get
 			{
 				return _tryLoginCommand ??
-					(_tryLoginCommand = new RelayCommand(obj =>
+					(_tryLoginCommand = new RelayCommand(async obj =>
 					{
-						if (_authModel.TryLogIn(new User { Login = Login, Password = Password}))
+						if (await _authModel.TryLogIn(new User { Login = Login, Password = Password}))
 						{
 							return;
 						}

@@ -27,13 +27,13 @@ namespace DesktopUI.ViewModels
         public ProductVM()
         {
             _productModel = new ProductModel();
-			_products = new ObservableCollection<Product.ProductModel>(_productModel.ProductRepository.GetLast(20));
+			_products = new ObservableCollection<Product.ProductModel>(_productModel.ProductRepository.GetLast(20).Result);
 
 			AddProductCommand = new RelayCommand(AddProduct);
 			UpdateProductCommand = new RelayCommand(UpdateProduct);
 			DeleteProductCommand = new RelayCommand(DeleteProduct);
         }
-
+		
 		public ICommand AddProductCommand {  get; set; }
 		public ICommand UpdateProductCommand { get; set; }
 		public ICommand DeleteProductCommand { get; set;}

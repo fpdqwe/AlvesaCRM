@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
@@ -7,19 +8,19 @@ namespace DAL.Repository
 	{
 		public UserRepository(IContextManager contextManager) : base(contextManager) { }
 
-		public User FindByLogin(string login)
+		public async Task<User> FindByLogin(string login)
 		{
             using (var db = CreateDatabaseContext())
             {
-                return db.Set<User>().FirstOrDefault(u => u.Login == login);
+                return await db.Set<User>().FirstOrDefaultAsync(u => u.Login == login);
             }
         }
 
-        public bool ExistUser(string login)
+        public async Task<bool> ExistUser(string login)
         {
             using (var db = CreateDatabaseContext())
             {
-                return db.Set<User>().Count(u => u.Login == login) > 0;
+                return await db.Set<User>().CountAsync(u => u.Login == login) > 0;
             }
         }
 

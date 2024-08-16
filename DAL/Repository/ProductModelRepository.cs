@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Domain.Entities.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
@@ -7,16 +8,16 @@ namespace DAL.Repository
 	{
 		public ProductModelRepository(IContextManager contextManager) : base(contextManager) { }
 
-		public List<ProductModel> GetLast(int count = 20)
+		public async Task<List<ProductModel>> GetLast(int count = 20)
 		{
 			using (var context = CreateDatabaseContext())
 			{
 				if(context.ProductModels != null)
 				{
-					return context.ProductModels
+					return await context.ProductModels
 						.OrderByDescending(x => x.Id)
 						.Take(count)
-						.ToList();
+						.ToListAsync();
 				}
 				return new List<ProductModel>();
 			}
