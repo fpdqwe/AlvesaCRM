@@ -28,23 +28,12 @@
                     Command="{Binding UpdateProductModel}"
                     Content="Update" Width="100"/>
         </StackPanel>
-        <DataGrid ItemsSource="{Binding ProductModels}"
-                  Style="{StaticResource TestGrid}"
-                  Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  SelectionMode="Extended"
-                  MinColumnWidth="50"
-                  >
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Id"/>
-                <DataGridTextColumn Header="Название"/>
-                <DataGridTextColumn Header="Штрихкод"/>
-                <DataGridTextColumn Header="Цена за шт."/>
-                <DataGridTextColumn Header="Стоимость пр-ва"/>
-                <DataGridTemplateColumn Header="ТЗ"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <TextBlock Style="{StaticResource ArticleText}"
-                   FontSize="30" Text="PRODUCTS" Grid.Row="1"/>
+        <Grid Grid.Row="1"
+              Margin="20">
+            <ContentControl>
+                
+            </ContentControl>
+        </Grid>
+        
     </Grid>
 </UserControl>

@@ -1,6 +1,9 @@
 ﻿using DAL;
 using DAL.Repository;
-using Domain.Entities.Product;
+using Entities = Domain.Entities.Product;
+using DesktopUI.Utilities.Services;
+using System.Collections;
+using System.Diagnostics;
 
 namespace DesktopUI.Models
 {
@@ -11,7 +14,7 @@ namespace DesktopUI.Models
         private ProductColorRepository _colorRepository;
         private ProductSizeRepository _sizeRepository;
 
-        public delegate void PruductListHandler(List<Domain.Entities.Product.ProductModel> product);
+        public delegate void PruductListHandler(List<Entities.ProductModel> product);
         public event PruductListHandler ProductsUpdated;
 
         public ProductModel()
@@ -23,10 +26,19 @@ namespace DesktopUI.Models
             _sizeRepository = new ProductSizeRepository(contextManager);
         }
 
-        public async void GetLast(int count = 20)
+        //public async void GetLast(int count = 20)
+        //{
+        //    var newList = await ProductRepository.GetLast(count);
+        //    ProductsUpdated?.Invoke(newList);
+        //}
+
+        private async IList<Entities.ProductModel> GetLast(int count = 20)
         {
             var newList = await ProductRepository.GetLast(count);
-            ProductsUpdated?.Invoke(newList);
+            Debug.WriteLine(newList.First().TechSpecs);
+            ProductService.SetCurrentList(newList);
         }
+
+        
     }
 }
