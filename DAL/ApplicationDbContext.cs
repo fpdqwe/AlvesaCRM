@@ -24,8 +24,7 @@ namespace DAL
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
             optionsBuilder
-                .LogTo(message => Debug.WriteLine(message), Microsoft.Extensions.Logging.LogLevel.Information)
-                .EnableSensitiveDataLogging();
+                .LogTo(message => Debug.WriteLine(message), Microsoft.Extensions.Logging.LogLevel.Information);
         }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

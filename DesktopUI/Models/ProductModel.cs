@@ -32,11 +32,12 @@ namespace DesktopUI.Models
         //    ProductsUpdated?.Invoke(newList);
         //}
 
-        private async IList<Entities.ProductModel> GetLast(int count = 20)
+        private async Task<IList<Entities.ProductModel>> GetLast(int count = 20)
         {
             var newList = await ProductRepository.GetLast(count);
             Debug.WriteLine(newList.First().TechSpecs);
             ProductService.SetCurrentList(newList);
+            return newList;
         }
 
         

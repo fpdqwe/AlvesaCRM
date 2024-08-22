@@ -12,6 +12,11 @@ namespace DesktopUI.Utilities.Services
         public static event ProductHandler CurrentChanged;
         public static List<ProductModel> Products { get; private set; } = new List<ProductModel>(20);
         public static ProductModel Current { get; private set; }
+
+        /// <summary>
+        /// Changes selected product
+        /// </summary>
+        /// <param name="product">Product to set</param>
         public static void SetCurrent(ProductModel product)
         {
             if(product != null && Current != product){
@@ -19,6 +24,7 @@ namespace DesktopUI.Utilities.Services
 				CurrentChanged.Invoke(product);
 			}
         }
+
         /// <summary>
         /// Changes current dataset of products
         /// </summary>

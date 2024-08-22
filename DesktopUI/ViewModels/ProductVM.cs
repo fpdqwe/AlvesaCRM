@@ -4,6 +4,7 @@ using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using DesktopUI.Commands;
 using DesktopUI.ViewModels.Products;
+using System.Diagnostics;
 
 namespace DesktopUI.ViewModels
 {
@@ -19,12 +20,26 @@ namespace DesktopUI.ViewModels
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(prop));
 		}
-		public object ObserveMode { get; set; }
+
+		// Fields and props
+		private object _observeMode;
+		public object ObserveMode
+		{
+			get => _observeMode;
+			set
+			{
+				_observeMode = value;
+				OnPropertyChanged(nameof(ObserveMode));
+			}
+		}
+
+		// Ctor
         public ProductVM()
         {
-			AdditionMode = new RelayCommand(OpenAddition, CanOpenAddition);
-			CardMode = new RelayCommand(OpenCard, CanOpenCard);
-			TableMode = new RelayCommand(OpenTable, CanOpenTable);
+			AdditionMode = new RelayCommand(OpenAddition);
+			CardMode = new RelayCommand(OpenCard);
+			TableMode = new RelayCommand(OpenTable);
+			ObserveMode = new AdditionVM();
         }
 
 		// Navigation commands
@@ -35,26 +50,17 @@ namespace DesktopUI.ViewModels
 		private void OpenAddition(object obj)
 		{
 			ObserveMode = new AdditionVM();
+			Debug.WriteLine($"AdditionVM called from {this}");
 		}
 		private void OpenCard(object obj)
 		{
 			ObserveMode = new CardVM();
+			Debug.WriteLine($"CardVM called from {this}");
 		}
 		private void OpenTable(object obj)
 		{
 			ObserveMode = new TableVM();
-		}
-		private bool CanOpenAddition(object obj)
-		{
-			return true;
-		}
-		private bool CanOpenCard(object obj)
-		{
-			return true;
-		}
-		private bool CanOpenTable(object obj)
-		{
-			return true;
+			Debug.WriteLine($"TableVM called from {this}");
 		}
 	}
 }

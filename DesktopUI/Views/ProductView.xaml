@@ -4,10 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:DesktopUI.ViewModels"
+             xmlns:vmp="clr-namespace:DesktopUI.ViewModels.Products"
+             xmlns:cc="clr-namespace:DesktopUI.Views.CustomControls.Products"
              xmlns:local="clr-namespace:DesktopUI.Views"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1600">
-
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type vmp:AdditionVM}">
+            <cc:Addition/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmp:CardVM}">
+            <cc:Card/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmp:TableVM}">
+            <cc:Table/>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <UserControl.DataContext>
         <vm:ProductVM/>
     </UserControl.DataContext>
@@ -19,18 +32,18 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Button Style="{StaticResource IsolatedBtn}"
-                    Command="{Binding AddProductModel}"
-                    Content="Create" Width="100"/>
+                    Command="{Binding AdditionMode}"
+                    Content="Add" Width="100"/>
             <Button Style="{StaticResource IsolatedBtn}"
-                    Command="{Binding DeleteProductModel}"
-                    Content="Delete" Width="100"/>
+                    Command="{Binding CardMode}"
+                    Content="Card" Width="100"/>
             <Button Style="{StaticResource IsolatedBtn}"
-                    Command="{Binding UpdateProductModel}"
-                    Content="Update" Width="100"/>
+                    Command="{Binding TableMode}"
+                    Content="Table" Width="100"/>
         </StackPanel>
         <Grid Grid.Row="1"
-              Margin="20">
-            <ContentControl>
+              Margin="50">
+            <ContentControl Content="{Binding ObserveMode}">
                 
             </ContentControl>
         </Grid>

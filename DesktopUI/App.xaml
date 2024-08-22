@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="Styles/TextInputs.xaml"/>
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Styles/Tables.xaml"/>
+                <ResourceDictionary Source="Styles/Borders.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

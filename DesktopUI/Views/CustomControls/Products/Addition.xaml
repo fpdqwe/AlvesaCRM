@@ -6,11 +6,87 @@
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Products"
              xmlns:vm="clr-namespace:DesktopUI.ViewModels.Products"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.DataContext>
         <vm:AdditionVM/>
     </UserControl.DataContext>
+    
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <TextBlock Style="{StaticResource ArticleText}"
+                   FontSize="30" Text="Создание модели"/>
+
+        <StackPanel Grid.Row="1"
+                    VerticalAlignment="Center">
+            <Border Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Артикул модели:" 
+                               FontSize="25"
+                               Width="700"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Width="700"
+                             Text="{Binding Product.ModelNumber, Mode=TwoWay}"/>
+                </StackPanel>
+            </Border>
+            <Border Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Название модели:" 
+                               FontSize="25"
+                               Width="700"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Width="700"
+                             Text="{Binding Product.Name, Mode=TwoWay}"/>
+                </StackPanel>
+            </Border>
+            <Border Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Описание:" 
+                               FontSize="25"
+                               Width="700"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Width="700"
+                             Text="{Binding Product.Description, Mode=TwoWay}"/>
+                </StackPanel>
+            </Border>
+            <Border Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Стоимость для заказчика:" 
+                               FontSize="25"
+                               Width="700"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Width="700"
+                             Text="{Binding Product.Price, Mode=TwoWay}"/>
+                </StackPanel>
+            </Border>
+            <Border Height="80">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="Стоимость пошива:" FontSize="25"
+                               Width="700"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Width="700"
+                             Text="{Binding Product.ProductionPrice, Mode=TwoWay}"/>
+                </StackPanel>
+            </Border>
+
+            <Button Style="{StaticResource IsolatedBtn}"
+                    Content="Добавить модель"
+                    Width="500"
+                    FontSize="25"
+                    Command="{Binding CreateCommand}"
+                    Height="100"/>
+        </StackPanel>
+
+        <TextBlock VerticalAlignment="Bottom" Grid.Row="1"
+                   Style="{StaticResource ArticleText}"
+                   Text="{Binding Message}"/>
     </Grid>
 </UserControl>
