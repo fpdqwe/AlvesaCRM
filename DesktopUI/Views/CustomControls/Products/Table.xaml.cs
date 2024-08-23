@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using DesktopUI.Utilities.Services;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Product = Domain.Entities.Product.ProductModel;
 
 namespace DesktopUI.Views.CustomControls.Products
 {
@@ -25,6 +14,20 @@ namespace DesktopUI.Views.CustomControls.Products
         {
             InitializeComponent();
             Debug.WriteLine("Table view initialized");
+            ProductService.ProductsChangedEvent += OnProductsChanged;
+        }
+
+        private void OnProductsChanged(IList<Product> products)
+        {
+            CardsContainer.Children.Clear();
+            foreach (var item in products)
+            {
+                Border border = new Border();
+                var tableItem = new TableItem(item);
+                border.Margin = new System.Windows.Thickness(0, 10, 0, 10);
+                border.Child = tableItem;
+                CardsContainer.Children.Add(border);
+            }
         }
     }
 }

@@ -15,10 +15,13 @@ namespace DesktopUI.Models
             _companyRepository = new CompanyRepository(contextManager);
         }
 
-        public bool ChangeCompanyType(Company company)
+        public async Task<bool> UpdateCompany(Company company)
         {
-
-            _companyRepository.Update(company);
+            try
+            {
+                await _companyRepository.Update(company);
+            }
+            catch (Exception ex) { return false; }
             return true;
         }
     }

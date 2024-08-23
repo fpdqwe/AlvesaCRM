@@ -1,27 +1,26 @@
-﻿using Domain.Entities.Product;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+﻿using Product = Domain.Entities.Product.ProductModel;
 
 namespace DesktopUI.Utilities.Services
 {
     public static class ProductService
     {
-        public delegate void ProductsHandler(IList<ProductModel> products);
-		public delegate void ProductHandler(ProductModel product);
+        public delegate void ProductsHandler(IList<Product> products);
+		public delegate void ProductHandler(Product product);
 
-		public static event ProductsHandler ProductsChanged;
-        public static event ProductHandler CurrentChanged;
-        public static List<ProductModel> Products { get; private set; } = new List<ProductModel>(20);
-        public static ProductModel Current { get; private set; }
+		public static event ProductsHandler ProductsChangedEvent;
+        public static event ProductHandler CurrentChangedEvent;
+        public static List<Product> Products { get; private set; } = new List<Product>(20);
+        public static Product Current { get; private set; }
 
         /// <summary>
         /// Changes selected product
         /// </summary>
         /// <param name="product">Product to set</param>
-        public static void SetCurrent(ProductModel product)
+        public static void SetCurrent(Product product)
         {
             if(product != null && Current != product){
 				Current = product;
-				CurrentChanged.Invoke(product);
+				CurrentChangedEvent.Invoke(product);
 			}
         }
 
@@ -30,12 +29,12 @@ namespace DesktopUI.Utilities.Services
         /// </summary>
         /// <param name="products"></param>
         /// <exception cref="NullReferenceException"></exception>
-        public static void SetCurrentList(IList<ProductModel> products)
+        public static void SetCurrentList(IList<Product> products)
         {
             if(products != null)
             {
                 Products = products.ToList();
-                ProductsChanged.Invoke(Products);
+                ProductsChangedEvent?.Invoke(Products);
             }
             else throw new NullReferenceException();
         }

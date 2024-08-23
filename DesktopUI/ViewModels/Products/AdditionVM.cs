@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Model = DesktopUI.Models.ProductModel;
 using Product = Domain.Entities.Product.ProductModel;
 
 namespace DesktopUI.ViewModels.Products
@@ -19,7 +20,7 @@ namespace DesktopUI.ViewModels.Products
 		private const string ADDING_SUCCESS = "Модель успешно добавлена в систему.";
 		private Product _product;
 		private string _message;
-		private ProductModelRepository _productModelRepository;
+		private Model _model;
 		public Product Product
 		{
 			get => _product;
@@ -43,7 +44,7 @@ namespace DesktopUI.ViewModels.Products
         public AdditionVM()
         {
 			_product = new Product();
-            _productModelRepository = new ProductModelRepository(new ContextManager());
+			_model = new Model();
 			Debug.WriteLine("AddtionVM initialized");
 			CreateCommand = new RelayCommand(CreateNewProduct);
         }
@@ -54,10 +55,9 @@ namespace DesktopUI.ViewModels.Products
 		private async void CreateNewProduct(object obj)
 		{
 			if(Product == null) { return;}
-			Product.Company = AuthService.CurrentUser.Company;
 			Product.CompanyId = AuthService.CurrentUser.CompanyId;
 			Product.TechSpecs = new List<TechSpec>() { CreateEmptyTS() };
-			if (await _productModelRepository.Add(Product) == null) Message = ADDING_ERROR;
+			if (await _model.Add(Product)) Message = ADDING_ERROR;
 			else Message = ADDING_SUCCESS;
 		}
 

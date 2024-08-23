@@ -1,45 +1,69 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using Product = Domain.Entities.Product.ProductModel;
 using System.Runtime.CompilerServices;
 using DesktopUI.Utilities.Services;
 using static DesktopUI.Utilities.Services.ProductService;
-using Microsoft.EntityFrameworkCore.Query.Internal;
-using DesktopUI.Views.CustomControls.Products;
+using Model = DesktopUI.Models.ProductModel;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
 
 namespace DesktopUI.ViewModels.Products
 {
 	public class TableVM : INotifyPropertyChanged
 	{
-		public List<TableItem> Items { get; set; }
+		// Fields
+		private List<Product> _products;
+		private Model _model;
 
-        public TableVM()
-        {
-            Init();
-			Debug.WriteLine("TableVM initialized");
+		// Properties
+		public ObservableCollection<Product> Products
+		{
+			get => new ObservableCollection<Product>(_products);
+			set
+			{
+				_products = value.ToList();
+				OnPropertyChanged(nameof(Products));
+			}
 		}
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+
+		// Ctors
+        public TableVM()
+        {
+			_model = new Model();
+			ProductsChangedEvent += OnProductsChanged;
+			Debug.WriteLine("TableVM initialized");
+			Init();
+		}
+
+		// Commands
+
+
+
+		// Public methods
+
+		
+
+
+		// Private methods
+
+		private void OnProductsChanged(IList<Product> products)
+		{
+			_products = products.ToList();
+		}
+
+		private async void Init()
+		{
+			SetCurrentList(await _model.GetLast());
+		}
+
+		// INotifyPropertyChanged realization
+
+		public event PropertyChangedEventHandler? PropertyChanged;
 		public void OnPropertyChanged([CallerMemberName] string prop = "")
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(prop));
-		}
-
-		private void OnProductsChanged(ProductsHandler products)
-		{
-			
-		}
-
-		private void Init()
-		{
-			Items = new List<TableItem>(20);
-			var source = ProductService.Products;
-			foreach (var item in source)
-			{
-				Items.Add(new TableItem(item));
-			}
 		}
 	}
 }

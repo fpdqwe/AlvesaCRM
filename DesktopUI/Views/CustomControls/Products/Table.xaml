@@ -19,12 +19,8 @@
     
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Hidden">
-            <StackPanel x:Name="ItemsContainer">
-                <ListBox ItemsSource="{Binding Items}">
-                </ListBox>
-            </StackPanel>
-            
+            <StackPanel Orientation="Vertical"
+                        Name="CardsContainer"/>
         </ScrollViewer>
-        
     </Grid>
 </UserControl>

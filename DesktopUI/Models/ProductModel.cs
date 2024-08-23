@@ -1,22 +1,24 @@
 ﻿using DAL;
 using DAL.Repository;
-using Entities = Domain.Entities.Product;
+using Product = Domain.Entities.Product.ProductModel;
 using DesktopUI.Utilities.Services;
-using System.Collections;
 using System.Diagnostics;
 
 namespace DesktopUI.Models
 {
 	public class ProductModel
 	{
+        // Fields and properties
 		public ProductModelRepository ProductRepository;
         private TechSpecRepository _techSpecRepository;
         private ProductColorRepository _colorRepository;
         private ProductSizeRepository _sizeRepository;
 
-        public delegate void PruductListHandler(List<Entities.ProductModel> product);
+        // Delegates and events
+        public delegate void PruductListHandler(List<Product> product);
         public event PruductListHandler ProductsUpdated;
 
+        // Ctors
         public ProductModel()
         {
             var contextManager = new ContextManager();
@@ -26,20 +28,30 @@ namespace DesktopUI.Models
             _sizeRepository = new ProductSizeRepository(contextManager);
         }
 
-        //public async void GetLast(int count = 20)
-        //{
-        //    var newList = await ProductRepository.GetLast(count);
-        //    ProductsUpdated?.Invoke(newList);
-        //}
+		// Public methods
 
-        private async Task<IList<Entities.ProductModel>> GetLast(int count = 20)
-        {
-            var newList = await ProductRepository.GetLast(count);
-            Debug.WriteLine(newList.First().TechSpecs);
-            ProductService.SetCurrentList(newList);
-            return newList;
-        }
+		public async Task<bool> Add(Product entity)
+		{
+			try
+			{
+				await ProductRepository.SaveOrUdate(entity);
+			}
+			catch (Exception ex) { return false; }
+			ProductService.SetCurrentList(await GetLast());
+            return true;
+		}
 
-        
-    }
+		public async Task<IList<Product>> GetLast(int count = 20)
+		{
+			var newList = await ProductRepository.GetLast(count);
+			Debug.WriteLine(newList.First().TechSpecs);
+			ProductService.SetCurrentList(newList);
+			return newList;
+		}
+
+		// Private mehods
+
+
+
+	}
 }

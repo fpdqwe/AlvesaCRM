@@ -85,8 +85,8 @@ namespace DAL.Repository
                     throw new ArgumentException("entity should be IDbEntity type", "entity");
 
                 var attachedEntity = await context.Set<T>().FindAsync(iDbEntity.GetPrimaryKey());
-                context.Set<T>().Update(attachedEntity);
-                context.SaveChanges();
+                context.Entry(attachedEntity).CurrentValues.SetValues(entity);
+                await context.SaveChangesAsync();
             }
             return entity;
         }

@@ -15,7 +15,7 @@
             CornerRadius="10"
             BorderThickness="2"
             BorderBrush="{StaticResource SCB-Content}"
-            Width="1400" Height="150">
+            Width="1300" Height="150">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"></ColumnDefinition>

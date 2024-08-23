@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using DesktopUI.ViewModels.Products;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Product = Domain.Entities.Product.ProductModel;
 
@@ -9,10 +10,6 @@ namespace DesktopUI.Views.CustomControls.Products
     /// </summary>
     public partial class TableItem : UserControl
     {
-        private Product _product { get; set; }
-
-        public string Title { get => _product.Name; set => _product.Name = value; }
-        public string Price { get => _product.Price.ToString(); }
         public TableItem()
         {
 			InitializeComponent();
@@ -20,8 +17,8 @@ namespace DesktopUI.Views.CustomControls.Products
 
         public TableItem(Product product)
         {
-            _product = product;
 			InitializeComponent();
+			DataContext = new TableItemVM(product);
 		}
     }
 }

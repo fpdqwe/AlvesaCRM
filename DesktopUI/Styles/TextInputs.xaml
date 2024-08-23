@@ -41,6 +41,7 @@
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Template" Value="{StaticResource TextBoxBaseControlTemplate}"/>
         <Setter Property="Width" Value="390"/>
+        
     </Style>
 
     <Style x:Key="DataGridCellText" TargetType="TextBox">

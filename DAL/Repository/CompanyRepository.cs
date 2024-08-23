@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace DAL.Repository
@@ -10,5 +11,5 @@ namespace DAL.Repository
         {
             
         }
-    }
+	}
 }

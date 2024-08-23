@@ -37,6 +37,10 @@ namespace DesktopUI.Models
 			var existingUser = await _userRepository.FindByLogin(credentials.Login);
 			if(existingUser != null && existingUser.Password == credentials.Password)
 			{
+				if(existingUser.Company == null)
+				{
+					existingUser.Company = await _companyRepository.Find(existingUser.Id);
+				}
 				AuthService.LoginSuccess(existingUser);
 				return true;
 			}

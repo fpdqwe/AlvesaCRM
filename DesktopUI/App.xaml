@@ -14,6 +14,7 @@
                 <ResourceDictionary Source="Styles/Buttons.xaml"/>
                 <ResourceDictionary Source="Styles/Tables.xaml"/>
                 <ResourceDictionary Source="Styles/Borders.xaml"/>
+                <ResourceDictionary Source="Styles/ComboBoxes.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

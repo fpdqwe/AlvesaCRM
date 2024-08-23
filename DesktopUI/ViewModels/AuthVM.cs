@@ -1,17 +1,15 @@
-﻿using DAL.Repository;
-using DesktopUI.Commands;
+﻿using DesktopUI.Commands;
 using DesktopUI.Models;
 using DesktopUI.Utilities;
 using Domain.Entities;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Net;
 using System.Runtime.CompilerServices;
 
 namespace DesktopUI.ViewModels
 {
 	class AuthVM : INotifyPropertyChanged
 	{
+		// Fields
         private AuthModel _authModel;
 		private RelayCommand _authCommand;
 		private RelayCommand _tryLoginCommand;
@@ -19,6 +17,7 @@ namespace DesktopUI.ViewModels
 		private string _password;
 		private string? _exception;
 
+		// Properties
 		public string Exception
 		{
 			get { return _exception; }
@@ -47,11 +46,14 @@ namespace DesktopUI.ViewModels
 			}
 		}
 
+		// Ctors
         public AuthVM()
 		{
 			_authModel = new AuthModel();
 			AuthService.LoginCompleted += OnLoginSuccess;
 		}
+
+		// Commands
         public RelayCommand AuthCommand
 		{
 			get
@@ -83,12 +85,14 @@ namespace DesktopUI.ViewModels
 			}
 		}
 
+		// Public methods
 		public void OnLoginSuccess(User user)
 		{
 			Exception = $"Добро пожаловать!, {user.FirstName}";
 			AuthService.LoginCompleted -= OnLoginSuccess;
 		}
 
+		// INotifyPropertyChanged realization
 		public event PropertyChangedEventHandler? PropertyChanged;
 		public void OnPropertyChanged([CallerMemberName] string prop = "")
 		{

@@ -1,10 +1,11 @@
-﻿using Product = Domain.Entities.Product;
+﻿using Product = Domain.Entities.Product.ProductModel;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using DesktopUI.Commands;
 using DesktopUI.ViewModels.Products;
 using System.Diagnostics;
+using DesktopUI.Utilities.Services;
 
 namespace DesktopUI.ViewModels
 {
@@ -40,6 +41,8 @@ namespace DesktopUI.ViewModels
 			CardMode = new RelayCommand(OpenCard);
 			TableMode = new RelayCommand(OpenTable);
 			ObserveMode = new AdditionVM();
+
+			ProductService.CurrentChangedEvent += OpenCard;
         }
 
 		// Navigation commands
@@ -61,6 +64,12 @@ namespace DesktopUI.ViewModels
 		{
 			ObserveMode = new TableVM();
 			Debug.WriteLine($"TableVM called from {this}");
+		}
+
+		// Event handlers
+		private void OnCardSelected(Product product)
+		{
+
 		}
 	}
 }

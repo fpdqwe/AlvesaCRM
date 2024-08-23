@@ -13,7 +13,10 @@ namespace DesktopUI.ViewModels.Products
 	/// </summary>
 	public class TableItemVM : INotifyPropertyChanged
 	{
+		// Fields
 		private Product _product;
+
+		// Properties
 		public Product Product
 		{
 			get => _product;
@@ -23,6 +26,8 @@ namespace DesktopUI.ViewModels.Products
 				OnPropertyChanged(nameof(Product));
 			}
 		}
+
+		// Ctors
         public TableItemVM()
         {
 			_product = new Product();
@@ -36,14 +41,21 @@ namespace DesktopUI.ViewModels.Products
 			Debug.WriteLine("TableItemVM initialized");
 		}
 
+		// Commands
 		public ICommand SelectCommand { get; set; }
+		
 
 		private void Select(object obj)
 		{
 			ProductService.SetCurrent(_product);
 		}
 
-        public event PropertyChangedEventHandler? PropertyChanged;
+		// Public methods
+
+		// Private methods
+
+		// INotifyPropertyChanged realiation
+		public event PropertyChangedEventHandler? PropertyChanged;
 		public void OnPropertyChanged([CallerMemberName] string prop = "")
 		{
 			if (PropertyChanged != null)
