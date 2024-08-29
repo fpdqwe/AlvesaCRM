@@ -7,4 +7,17 @@
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Background" Value="{StaticResource SCB-Background}"/>
     </Style>
+
+    <Style x:Key="UnderLine" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+        <Setter Property="BorderThickness" Value="0 0 0 2"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+
+    <Style x:Key="VerticalLine" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+        <Setter Property="BorderThickness" Value="2 0 2 0"/>
+        <Setter Property="Grid.RowSpan" Value="2"/>
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
 </ResourceDictionary>
