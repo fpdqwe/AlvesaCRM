@@ -20,4 +20,24 @@
         <Setter Property="Grid.RowSpan" Value="2"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
+
+    <Style TargetType="Popup" x:Key="FadeOutPopupStyle">
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="PopupAnimation" Value="Fade"/>
+        <Style.Triggers>
+            <Trigger Property="IsOpen" Value="True">
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                             From="1"
+                                             To="0"
+                                             Duration="0:0:4"
+                                             Completed="PopupFadeCompleted"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

@@ -12,6 +12,13 @@
     </UserControl.DataContext>
     
     <Grid>
-            
+        <Popup IsOpen="False"
+               Placement="Center">
+            <Border Style="{StaticResource EmptyBorder}">
+                <TextBlock Style="{StaticResource ArticleText}"
+                           Text="Transaction completed successfuly"
+                           Margin="20"/>
+            </Border>
+        </Popup>
     </Grid>
 </UserControl>

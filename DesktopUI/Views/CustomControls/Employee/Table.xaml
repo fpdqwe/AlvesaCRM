@@ -7,11 +7,70 @@
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Employee"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="TableItem">
+            <Border Style="{StaticResource EmptyBorder}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding Path=Id}"/>
+                    
+                    <Border Style="{StaticResource EmptyBorder}"
+                            Grid.Column="1">
+                        <StackPanel>
+                        <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding Path=FirstName}"/>
+                        <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding Path=LastName}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="0"
+                                   Style="{StaticResource ArticleText}"
+                                   Text="Тел."/>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="0"
+                                   Style="{StaticResource ArticleText}"
+                                   Text="Почта"/>
+                        <TextBlock Grid.Row="0"
+                                   Grid.Column="1"
+                                   Style="{StaticResource ArticleText}"
+                                   Text="{Binding Path=PhoneNumber}"/>
+                        <TextBlock Grid.Row="1"
+                                   Grid.Column="1"
+                                   Style="{StaticResource ArticleText}"
+                                   Text="{Binding Path=Email}"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <UserControl.DataContext>
         <vm:TableVM/>
     </UserControl.DataContext>
     
     <Grid>
-            
+        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                 ItemsSource="{Binding Employee}"
+                 ItemTemplate="{StaticResource TableItem}"
+                 Background="Transparent">
+        </ListBox>
     </Grid>
 </UserControl>

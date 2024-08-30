@@ -13,7 +13,12 @@
         <DataTemplate DataType="{x:Type toolsVM:AdditionVM}">
             <tools:Addition/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type tools}"
+        <DataTemplate DataType="{x:Type toolsVM:CardVM}">
+            <tools:Card/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type toolsVM:TableVM}">
+            <tools:Table/>
+        </DataTemplate>
     </UserControl.Resources>
     
     <UserControl.DataContext>
@@ -26,7 +31,19 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Background="{StaticResource SCB-Main}"/>
+        <Button Style="{StaticResource IsolatedBtn}"
+                Content="Новый сотрудник" 
+                FontSize="20"
+                BorderThickness="2"
+                Background="{StaticResource SCB-Background}"
+                Margin="5 5 20 5"
+                Padding="5"
+                BorderBrush="{StaticResource SCB-Content}"
+                HorizontalAlignment="Right"
+                Width="240"/>
 
+        <TextBlock Style="{StaticResource ArticleText}"
+                   Text="{Binding Title}"/>
         <ContentControl Content="{Binding NavigationVM}"
                         Grid.Row="1"/>
     </Grid>
