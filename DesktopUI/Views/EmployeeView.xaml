@@ -44,7 +44,7 @@
 
         <TextBlock Style="{StaticResource ArticleText}"
                    Text="{Binding Title}"/>
-        <ContentControl Content="{Binding NavigationVM}"
+        <ContentControl Content="{Binding ObserveMode}"
                         Grid.Row="1"/>
     </Grid>
 </UserControl>

@@ -29,13 +29,13 @@ namespace DesktopUI.ViewModels
                 }
             }
         }
-        public object NavigationVM
+        public object ObserveMode
         {
             get => _navigationVM;
             set
             {
                 _navigationVM = value;
-                OnPropertyChanged(nameof(NavigationVM));
+                OnPropertyChanged(nameof(ObserveMode));
             }
         }
 		// Ctors
@@ -45,7 +45,7 @@ namespace DesktopUI.ViewModels
             AdditionCommand = new RelayCommand(Addition);
             CardCommand = new RelayCommand(Card);
             TableCommand = new RelayCommand(Table);
-            NavigationVM = new TableVM();
+            ObserveMode = new TableVM();
         }
 
         // Commands
@@ -56,15 +56,15 @@ namespace DesktopUI.ViewModels
 
 		private void Addition(object obj)
         {
-            NavigationVM = new AdditionVM();
+            ObserveMode = new AdditionVM();
         }
         private void Card(object obj)
         {
-            NavigationVM = new CardVM();
+            ObserveMode = new CardVM();
         }
         private void Table(object obj)
         {
-            NavigationVM = new TableVM();
+            ObserveMode = new TableVM();
         }
 
         // Public Methods

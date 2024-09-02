@@ -2,6 +2,7 @@
 using DAL.Repository;
 using DesktopUI.Commands;
 using DesktopUI.Utilities;
+using DesktopUI.Utilities.Services;
 using Domain.Entities.Product;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,6 +20,8 @@ namespace DesktopUI.ViewModels.Products
 		private const string ADDING_ERROR = "Что-то пошло не так, модель не добавлена...";
 		private const string ADDING_SUCCESS = "Модель успешно добавлена в систему.";
 		private Product _product;
+		private decimal _productionPrice;
+		private decimal _price;
 		private string _message;
 		private Model _model;
 		public Product Product
@@ -37,6 +40,24 @@ namespace DesktopUI.ViewModels.Products
 			{
 				_message = value;
 				OnPropertyChanged(nameof(Message));
+			}
+		}
+		public decimal ProductionPrice
+		{
+			get => _productionPrice;
+			set
+			{
+				_productionPrice = value;
+				OnPropertyChanged(nameof(ProductionPrice));
+			}
+		}
+		public decimal Price
+		{
+			get => _price;
+			set
+			{
+				_price = value;
+				OnPropertyChanged(nameof(Price));
 			}
 		}
 
@@ -78,6 +99,7 @@ namespace DesktopUI.ViewModels.Products
 			var size = new ProductSize()
 			{
 				Name = UNASSIGNED,
+				Barcode = UNASSIGNED,
 				Quantity = 0
 			};
 			var color = new ProductColor()
@@ -90,7 +112,9 @@ namespace DesktopUI.ViewModels.Products
 			{
 				Colors = new List<ProductColor>() { color },
 				SequenceNum = 0,
-				TotalQuantity = 0
+				TotalQuantity = 0,
+				ProductionPrice = ProductionPrice,
+				Price = Price,
 			};
 			return ts;
 		}

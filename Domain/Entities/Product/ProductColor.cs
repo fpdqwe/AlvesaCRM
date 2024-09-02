@@ -8,7 +8,7 @@ namespace Domain.Entities.Product
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Composition { get; set; }
+        public string? Composition { get; set; }
         public int TotalQuantity { get; set; }
         public int TechSpecId { get; set; }
         public TechSpec TechSpec { get; set; }

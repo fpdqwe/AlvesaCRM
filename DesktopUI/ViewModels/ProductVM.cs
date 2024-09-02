@@ -40,7 +40,7 @@ namespace DesktopUI.ViewModels
 			AdditionMode = new RelayCommand(OpenAddition);
 			CardMode = new RelayCommand(OpenCard);
 			TableMode = new RelayCommand(OpenTable);
-			ObserveMode = new AdditionVM();
+			ObserveMode = new TableVM();
 
 			ProductService.CurrentChangedEvent += OpenCard;
         }

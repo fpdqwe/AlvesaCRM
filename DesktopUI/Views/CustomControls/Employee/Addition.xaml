@@ -6,13 +6,20 @@
              xmlns:vm="clr-namespace:DesktopUI.ViewModels.Employee"
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Employee"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="1400">
     <UserControl.DataContext>
         <vm:AdditionVM/>
     </UserControl.DataContext>
-    
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="80"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
         <Popup IsOpen="False"
+               StaysOpen="False"
+               Opened="Popup_Opened"
                Placement="Center">
             <Border Style="{StaticResource EmptyBorder}">
                 <TextBlock Style="{StaticResource ArticleText}"
@@ -20,5 +27,168 @@
                            Margin="20"/>
             </Border>
         </Popup>
+        
+        <Border Background="{StaticResource SCB-Main}"
+                BorderBrush="{StaticResource SCB-Background}"
+                BorderThickness="0 0 0 2">
+            <TextBlock Style="{StaticResource ArticleText}"
+                       Text="Добавление сотрудника"/>
+        </Border>
+
+
+        <Grid Grid.Row="1" Margin="50 15"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource UnderLine}"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Имя сотрудника"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="1"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Фамилия сотрудника"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                            Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="2"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Тел. номер"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                             Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="3"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Эл. почта"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                             Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="4"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Должность"/>
+                    <ComboBox Grid.Column="1"
+                              Height="48"
+                              Width="390"
+                              Margin="5 10"
+                              Padding="0"
+                              HorizontalAlignment="Left"
+                              SelectedItem="{Binding NewUserType}"
+                              ItemsSource="{Binding UserTypes}"
+                              Style="{StaticResource TestStyle}"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="5"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Логин"/>
+                    <TextBox Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             Style="{StaticResource DefaultTextInput}"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="6"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Пароль"/>
+                    <TextBox Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             Style="{StaticResource DefaultTextInput}"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Button 
+            Grid.Row="1"
+            Width="200"
+            Height="80"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 20"
+            Content="Добавить"
+            Style="{StaticResource IsolatedBtn}">
+            
+        </Button>
     </Grid>
 </UserControl>

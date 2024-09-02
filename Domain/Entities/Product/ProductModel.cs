@@ -15,9 +15,24 @@ namespace Domain.Entities.Product
         public int CompanyId { get; set; }
         public Company Company { get; set; }
 
+		public override bool Equals(object? obj)
+		{
+            if(obj is not ProductModel other)
+                return false;
+
+            return Id == other.Id &&
+                Name == other.Name;
+		}
+
 		public int GetPrimaryKey()
 		{
 			return Id;
+		}
+
+		public override string? ToString()
+		{
+            return "Info about Product: "
+                + Id + ", " + Name + ", Production price: ";
 		}
 	}
 }

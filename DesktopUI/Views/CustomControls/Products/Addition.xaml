@@ -20,70 +20,119 @@
         <TextBlock Style="{StaticResource ArticleText}"
                    FontSize="30" Text="Создание модели"/>
 
-        <StackPanel Grid.Row="1"
-                    VerticalAlignment="Center">
-            <Border Height="80">
-                <StackPanel Orientation="Horizontal">
+        <Grid Grid.Row="1"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center"
+              Margin="50 15">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Height="80" Grid.Row="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource ArticleText}"
                                Text="Артикул модели:" 
                                FontSize="25"
-                               Width="700"/>
+                               Margin="0 0 25 0"
+                               HorizontalAlignment="Right"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
-                             Width="700"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
                              Text="{Binding Product.ModelNumber, Mode=TwoWay}"/>
-                </StackPanel>
+                </Grid>
             </Border>
-            <Border Height="80">
-                <StackPanel Orientation="Horizontal">
+            <Border Height="80" Grid.Row="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource ArticleText}"
                                Text="Название модели:" 
                                FontSize="25"
-                               Width="700"/>
+                               Margin="0 0 25 0"
+                               HorizontalAlignment="Right"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
-                             Width="700"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
                              Text="{Binding Product.Name, Mode=TwoWay}"/>
-                </StackPanel>
+                </Grid>
             </Border>
-            <Border Height="80">
-                <StackPanel Orientation="Horizontal">
+            <Border Height="80" Grid.Row="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource ArticleText}"
                                Text="Описание:" 
                                FontSize="25"
-                               Width="700"/>
+                               TextWrapping="Wrap"
+                               Margin="0 0 25 0"
+                               HorizontalAlignment="Right"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
-                             Width="700"
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
                              Text="{Binding Product.Description, Mode=TwoWay}"/>
-                </StackPanel>
+                </Grid>
             </Border>
-            <Border Height="80">
-                <StackPanel Orientation="Horizontal">
+            
+
+            
+            <Border Height="80" Grid.Row="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource ArticleText}"
                                Text="Стоимость для заказчика:" 
                                FontSize="25"
-                               Width="700"/>
+                               Margin="0 0 25 0"
+                               HorizontalAlignment="Right"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
-                             Width="700"
-                             Text="{Binding Product.Price, Mode=TwoWay}"/>
-                </StackPanel>
+                             HorizontalAlignment="Left"
+                             Grid.Column="1"
+                             PreviewTextInput="TextBox_PreviewTextInput"
+                             Text="{Binding Price, Mode=TwoWay}"/>
+                </Grid>
             </Border>
-            <Border Height="80">
-                <StackPanel Orientation="Horizontal">
+            <Border Height="80" Grid.Row="4">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Style="{StaticResource ArticleText}"
-                               Text="Стоимость пошива:" FontSize="25"
-                               Width="700"/>
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Стоимость пошива:" FontSize="25"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
-                             Width="700"
-                             Text="{Binding Product.ProductionPrice, Mode=TwoWay}"/>
-                </StackPanel>
+                             Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             PreviewTextInput="TextBox_PreviewTextInput"
+                             Text="{Binding ProductionPrice, Mode=TwoWay}"/>
+                </Grid>
             </Border>
-
+            
+            
+            
             <Button Style="{StaticResource IsolatedBtn}"
                     Content="Добавить модель"
-                    Width="500"
+                    Width="350"
                     FontSize="25"
                     Command="{Binding CreateCommand}"
-                    Height="100"/>
-        </StackPanel>
+                    Height="80"
+                    Grid.Row="5"/>
+        </Grid>
 
         <TextBlock VerticalAlignment="Bottom" Grid.Row="1"
                    Style="{StaticResource ArticleText}"

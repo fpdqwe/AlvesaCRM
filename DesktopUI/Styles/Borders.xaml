@@ -32,8 +32,7 @@
                             <DoubleAnimation Storyboard.TargetProperty="Opacity"
                                              From="1"
                                              To="0"
-                                             Duration="0:0:4"
-                                             Completed="PopupFadeCompleted"/>
+                                             Duration="0:0:4"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>
