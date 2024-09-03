@@ -9,17 +9,13 @@
              d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.Resources>
         <DataTemplate x:Key="ProductItemTemplate">
-            <Border Background="{StaticResource SCB-Main}" 
-                    CornerRadius="10"
-                    BorderThickness="2"
-                    Margin="40 5 0 5"
-                    BorderBrush="{StaticResource SCB-Content}"
-                    Width="1300" Height="150">
+            <Grid Height="150" Margin="5" HorizontalAlignment="Center">
+            <Border Style="{StaticResource TableContentBorder}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="150"></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -34,23 +30,28 @@
                     <Border Grid.RowSpan="2" 
                             Margin="10" 
                             Style="{StaticResource EmptyBorder}">
-                        <Image Source="/Resources/Images/Tshirt.png" Margin="5"/>
+                        <Image Source="/Resources/Images/Tshirt.png" 
+                               Margin="5"/>
                     </Border>
 
 
                     <Grid Grid.Row="0"
                           Grid.Column="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Border Grid.Column="1" Margin="10"
+                        <Border Grid.Column="1" 
+                                Margin="10"
+                                MinWidth="400"
                                 Style="{StaticResource EmptyBorder}">
                             <TextBlock Style="{StaticResource ArticleText}"
                                        Text="{Binding Product.Name}" 
                                        FontSize="25"/>
                         </Border>
-                        <Border Grid.Column="0" Margin="10"
+                        <Border Grid.Column="0" 
+                                Margin="10"
+                                MinWidth="200"
                                 Style="{StaticResource EmptyBorder}">
                             <TextBlock Style="{StaticResource ArticleText}"
                                        Text="{Binding Product.ModelNumber}" 
@@ -70,12 +71,13 @@
 
                     <Grid Grid.Column="2" 
                           Grid.RowSpan="2"
+                          MaxWidth="550"
                           Name="PropsContainer">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
+                            <ColumnDefinition Width="1*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition></RowDefinition>
@@ -84,28 +86,35 @@
 
                         <Border Style="{StaticResource UnderLine}" Grid.ColumnSpan="4"/>
                         <Border Style="{StaticResource VerticalLine}" Grid.Column="0"/>
+                        <Border Style="{StaticResource VerticalLine}" Grid.Column="1"/>
                         <Border Style="{StaticResource VerticalLine}" Grid.Column="2"/>
+                        <Border Style="{StaticResource VerticalLine}" Grid.Column="3"/>
 
                         <TextBlock Style="{StaticResource ArticleText}"
                                    Text="Общее кол-во изделий"
+                                   Margin="5"
                                    TextWrapping="Wrap"/>
                         <TextBlock Style="{StaticResource ArticleText}"
                                    Text="Выпущено единиц"
+                                   Margin="5"
                                    TextWrapping="Wrap"
                                    Grid.Column="1"/>
                         <TextBlock Style="{StaticResource ArticleText}"
                                    Text="ТЗ в работе"
                                    TextWrapping="Wrap"
+                                   Margin="5"
                                    Grid.Column="2"/>
                         <TextBlock Style="{StaticResource ArticleText}"
                                    MaxWidth="{Binding ActualWidth, ElementName=PropsContainer}"
                                    Text="ТЗ всего"
                                    TextWrapping="Wrap"
+                                   Margin="5"
                                    Grid.Column="3"
                                    Width="150"/>
                     </Grid>
                 </Grid>
             </Border>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
     
@@ -113,8 +122,10 @@
         <vm:TableVM/>
     </UserControl.DataContext>
     
-    <Grid>
+    <Grid Margin="40 5">
         <ListBox x:Name="ProdList" 
+                 BorderBrush="Transparent"
+                 
                  ItemsSource="{Binding Products}"
                  ItemTemplate="{StaticResource ProductItemTemplate}"
                  Background="Transparent"

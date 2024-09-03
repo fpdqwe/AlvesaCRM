@@ -16,11 +16,23 @@
 
     <Style x:Key="VerticalLine" TargetType="Border">
         <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
-        <Setter Property="BorderThickness" Value="2 0 2 0"/>
+        <Setter Property="BorderThickness" Value="2 0 0 0"/>
         <Setter Property="Grid.RowSpan" Value="2"/>
         <Setter Property="Background" Value="Transparent"/>
     </Style>
 
+    <Style x:Key="TableContentBorder" TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Content}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="CornerRadius" Value="10"/>
+        <Setter Property="Background" Value="{StaticResource SCB-Main}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
     <Style TargetType="Popup" x:Key="FadeOutPopupStyle">
         <Setter Property="AllowsTransparency" Value="True"/>
         <Setter Property="PopupAnimation" Value="Fade"/>

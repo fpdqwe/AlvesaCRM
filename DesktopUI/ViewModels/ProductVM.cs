@@ -52,16 +52,19 @@ namespace DesktopUI.ViewModels
 
 		private void OpenAddition(object obj)
 		{
+			if(ObserveMode is AdditionVM) return;
 			ObserveMode = new AdditionVM();
 			Debug.WriteLine($"AdditionVM called from {this}");
 		}
 		private void OpenCard(object obj)
 		{
+			if (ObserveMode is CardVM) return;
 			ObserveMode = new CardVM();
 			Debug.WriteLine($"CardVM called from {this}");
 		}
 		private void OpenTable(object obj)
 		{
+			if (ObserveMode is TableVM) return;
 			ObserveMode = new TableVM();
 			Debug.WriteLine($"TableVM called from {this}");
 		}

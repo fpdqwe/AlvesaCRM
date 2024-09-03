@@ -6,10 +6,11 @@ using static DesktopUI.Utilities.Services.ProductService;
 using Model = DesktopUI.Models.ProductModel;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using DesktopUI.Utilities;
 
 namespace DesktopUI.ViewModels.Products
 {
-	public class TableVM : INotifyPropertyChanged
+	public class TableVM : BaseViewModel
 	{
 		// Fields
 		private static int CallCounter;
@@ -33,6 +34,15 @@ namespace DesktopUI.ViewModels.Products
 		{
 			_model = new Model();
 			ProductsChangedEvent += OnProductsChanged;
+			//_products = new List<Product>(){
+			//	new Product{Id = 1,
+			//	CompanyId = AuthService.CurrentUser.CompanyId,
+			//	ModelNumber = "test",
+			//	Name = "Test",
+			//	Description = "Test",
+				
+			//}
+			//};
 			Debug.WriteLine("TableVM initialized");
 			Init();
 		}
@@ -55,21 +65,12 @@ namespace DesktopUI.ViewModels.Products
 				Debug.WriteLine("Новый список продуктов не отличается от текущего, хотя был вызван ивент ProductsChangedEvent!");
 				return; 
 			}
-			_products = products.ToList();
+			Products = new ObservableCollection<Product>(products);
 		}
 
 		private async void Init()
 		{
-			SetCurrentList(await _model.GetLast());
-		}
-
-		// INotifyPropertyChanged realization
-
-		public event PropertyChangedEventHandler? PropertyChanged;
-		public void OnPropertyChanged([CallerMemberName] string prop = "")
-		{
-			if (PropertyChanged != null)
-				PropertyChanged(this, new PropertyChangedEventArgs(prop));
+			await _model.GetLast();
 		}
 
 		private bool CompareLists(List<Product> list1, List<Product> list2)
