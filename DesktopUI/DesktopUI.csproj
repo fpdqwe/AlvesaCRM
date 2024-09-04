@@ -9,7 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
+    <None Remove="Resources\Images\Tshirt.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\Fonts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Tshirt.png" />
   </ItemGroup>
 
 </Project>

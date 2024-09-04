@@ -1,4 +1,22 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
+    <Style x:Key="ArticleText" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="Foreground" Value="{StaticResource SCB-Content}"/>
+        <Setter Property="TextAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="ArticleSelector" TargetType="ComboBox">
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="MinWidth" Value="390"/>
+        <Setter Property="Background" Value="{StaticResource SCB-Main}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+        <Setter Property="Foreground" Value="{StaticResource SCB-Content}"/>
+    </Style>
 </ResourceDictionary>

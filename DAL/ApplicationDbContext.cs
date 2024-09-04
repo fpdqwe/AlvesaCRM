@@ -8,24 +8,24 @@ namespace DAL
 {
 	public class ApplicationDbContext : DbContext
 	{
-		public static User CurrentUser { get; set; }
 		public DbSet<User> Users { get; set; }
 		public DbSet<ProductModel> ProductModels { get; set; }
 		public DbSet<TechSpec> TechSpecs { get; set; }
 		public DbSet<ProductColor> ProductColors { get; set; }
 		public DbSet<ProductSize> ProductSizes { get; set; }
+		public DbSet<Company> Companies { get; set; }
+		public DbSet<IndivisibleOperation> IndivisibleOperations { get; set; }
 
 		
-        public ApplicationDbContext(string nameorConnectionString)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-			Database.SetConnectionString(nameorConnectionString);
             Database.EnsureCreated();
         }
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
             optionsBuilder
                 .LogTo(message => Debug.WriteLine(message), Microsoft.Extensions.Logging.LogLevel.Information)
-                .EnableSensitiveDataLogging();
+				.EnableSensitiveDataLogging(true);
         }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -34,8 +34,6 @@ namespace DAL
 				.HasMany(t => t.TechSpecs)
 				.WithOne(t => t.ProductModel)
 				.HasForeignKey(t => t.ModelId);
-			modelBuilder.Entity<ProductModel>()
-				.HasMany(u => u.Customers);	
 			modelBuilder.Entity<TechSpec>()
 				.HasMany(c => c.Colors)
 				.WithOne(c => c.TechSpec)
@@ -44,7 +42,22 @@ namespace DAL
 				.HasMany(s => s.Sizes)
 				.WithOne(s => s.Color)
 				.HasForeignKey(s => s.ColorId);
-			
+			modelBuilder.Entity<Company>()
+				.HasMany(x => x.Products)
+				.WithOne(x => x.Company)
+				.HasForeignKey(x => x.CompanyId);
+			modelBuilder.Entity<Company>()
+				.HasMany(x => x.Employee)
+				.WithOne(x => x.Company)
+				.HasForeignKey(x => x.CompanyId);
+
+			modelBuilder.Entity<IndivisibleOperation>()
+				.HasOne(x => x.Company)
+				.WithMany(x => x.IndivisibleOperations)
+				.HasForeignKey(x => x.CompanyId);
+			modelBuilder.Entity<UnitedOperation>()
+				.HasMany(x => x.Operations)
+				.WithMany(x => x.Parents);
 		}
 	}
 }

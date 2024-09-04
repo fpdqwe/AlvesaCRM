@@ -1,0 +1,286 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style TargetType="ComboBox" x:Key="IsolatedComboBox">
+        <Setter Property="Background" Value="#778da9"/>
+        <Setter Property="Foreground" Value="#e0e1dd"/>
+        <Setter Property="BorderBrush" Value="#415a77"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Margin" Value="10"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Width" Value="400"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate 
+                    TargetType="ComboBox">
+                    <Grid 
+                        Width="{TemplateBinding Width}"
+                        MaxWidth="{TemplateBinding MaxWidth}"
+                        MinWidth="{TemplateBinding MinWidth}">
+                        <ToggleButton 
+                            Name="ToggleButton"
+                            Focusable="False"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}"
+                            ClickMode="Press">
+
+                            <ToggleButton.Template>
+                                <ControlTemplate TargetType="ToggleButton">
+                                    <Border 
+                                        CornerRadius="10"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        >
+                                        <Grid>
+                                            
+                                        
+                                        <ContentPresenter
+                                            HorizontalAlignment="Left"
+                                            VerticalAlignment="Center"/>
+
+                                        <Path 
+                                            x:Name="Arrow"
+                                            Data="M0,1 L1,0 L2,1" 
+                                            Stroke="#e0e1dd"
+                                            Stretch="Uniform"
+                                            StrokeThickness="2"
+                                            Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            VerticalAlignment="Center"
+                                            Width="10"
+                                            Margin="5 0 10 0"
+                                            Height="15">
+
+                                            <Path.RenderTransform>
+                                                <RotateTransform Angle="0"/>
+                                            </Path.RenderTransform>
+
+                                            <Path.Triggers>
+                                                <EventTrigger RoutedEvent="ToggleButton.Checked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation 
+                                                                Storyboard.TargetName="Arrow"
+                                                                Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                                                To="#415a77" 
+                                                                Duration="0:0:0.2"/>
+                                                            <DoubleAnimation 
+                                                                Storyboard.TargetName="Arrow.RenderTransform.(RotateTransform.Angle)"
+                                                                To="180"
+                                                                Duration="0:0:0.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+
+                                                <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                                                    <BeginStoryboard>
+                                                        <Storyboard>
+                                                            <ColorAnimation 
+                                                                Storyboard.TargetName="Arrow"
+                                                                Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                                                To="#e0e1dd" 
+                                                                Duration="0:0:0.2"/>
+                                                            <DoubleAnimation 
+                                                                Storyboard.TargetName="Arrow.RenderTransform.(RotateTransform.Angle)"
+                                                                To="0" 
+                                                                Duration="0:0:0.2"/>
+                                                        </Storyboard>
+                                                    </BeginStoryboard>
+                                                </EventTrigger>
+                                            </Path.Triggers>
+                                        </Path>
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </ToggleButton.Template>
+
+                            <Grid>
+                                <ContentPresenter 
+                                    Margin="3,3,0,3"
+                                    Grid.Column="0"
+                                    Content="{TemplateBinding SelectionBoxItem}"
+                                    ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                    ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"/>
+                                
+                            </Grid>
+                        </ToggleButton>
+                        
+                        <Popup 
+                            Name="Popup"
+                            Placement="Bottom"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            IsOpen="{TemplateBinding IsDropDownOpen}"
+                            PopupAnimation="Slide">
+                            
+                            <Border 
+                                Name="DropDown" 
+                                Background="{TemplateBinding Background}"
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                CornerRadius="10">
+                                <ScrollViewer 
+                                    Margin="4,6,4,6" 
+                                    SnapsToDevicePixels="True">
+                                    <ItemsPresenter/>
+                                </ScrollViewer>
+                            </Border>
+                            
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <ControlTemplate TargetType="ToggleButton" x:Key="ComboBoxButton">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="40"/>
+            </Grid.ColumnDefinitions>
+
+            <ContentPresenter
+                Grid.Column="1"
+                />
+
+            <Path 
+                x:Name="Arrow"
+                Data="M0,1 L1,0 L2,1" 
+                Stroke="#e0e1dd"
+                Stretch="Uniform"
+                StrokeThickness="2"
+                Grid.Column="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Width="10">
+                
+                <Path.RenderTransform>
+                    <RotateTransform Angle="0"/>
+                </Path.RenderTransform>
+
+                <Path.Triggers>
+                    <EventTrigger RoutedEvent="ToggleButton.Checked">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="Arrow"
+                                    Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                    To="#415a77" 
+                                    Duration="0:0:0.2"/>
+                                <DoubleAnimation 
+                                    Storyboard.TargetName="Arrow.RenderTransform.(RotateTransform.Angle)"
+                                    To="180"
+                                    Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+
+                    <EventTrigger RoutedEvent="ToggleButton.Unchecked">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <ColorAnimation 
+                                    Storyboard.TargetName="Arrow"
+                                    Storyboard.TargetProperty="(Path.Fill).(SolidColorBrush.Color)"
+                                    To="#e0e1dd" 
+                                    Duration="0:0:0.2"/>
+                                <DoubleAnimation 
+                                    Storyboard.TargetName="Arrow.RenderTransform.(RotateTransform.Angle)"
+                                    To="0" 
+                                    Duration="0:0:0.2"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Path.Triggers>
+            </Path>
+        </Grid>
+    </ControlTemplate>
+
+    <Style TargetType="ComboBox" x:Key="TestStyle">
+        <Setter Property="UIElement.SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Foreground" Value="{StaticResource SCB-Content}"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Background" Value="{StaticResource SCB-Main}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="Width" Value="390"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Border.CornerRadius" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ComboBox">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="1"
+                        CornerRadius="10">
+                    <Grid>
+                        <ToggleButton 
+                            Grid.ColumnSpan="1"
+                            Name="ToggleButton"
+                            Width="{TemplateBinding Width}"
+                            ClickMode="Press"
+                            HorizontalAlignment="Right"
+                            OverridesDefaultStyle="True"
+                            IsChecked="{Binding Path=IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            Template="{StaticResource ComboBoxButton}"/>
+
+                        <ContentPresenter
+                            Name="ContentSite"
+                            Margin="5 3 23 3"
+                            IsHitTestVisible="False"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Content="{TemplateBinding SelectionBoxItem}"
+                            ContentTemplate="{TemplateBinding ItemTemplate}"
+                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"/>
+
+                            <Popup
+                                Name="Popup"
+                                Placement="Bottom"
+                                Width="{TemplateBinding Width}"
+                                Focusable="False"
+                                AllowsTransparency="True"
+                                IsOpen="{TemplateBinding IsDropDownOpen}"
+                                PopupAnimation="Slide">
+                                <Grid
+                                    Name="DropDown"
+                                    SnapsToDevicePixels="True">
+                                    <Border
+                                    Name="DropDownBorder"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="10">
+                                        <ScrollViewer
+                                            x:Name="Scroll"
+                                            SnapsToDevicePixels="True"
+                                            Margin="5">
+                                            <ItemsPresenter Name="Item" KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                        </ScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Scroll" Property="Foreground" Value="{StaticResource ResourceKey=SCB-Background}"/>
+                            <!-- Цвет текста при наведении -->
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter TargetName="Scroll" Property="Foreground" Value="{StaticResource ResourceKey=SCB-Content}"/>
+                            <!-- Возврат к начальному цвету -->
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

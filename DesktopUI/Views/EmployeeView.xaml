@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="DesktopUI.Views.EmployeeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm ="clr-namespace:DesktopUI.ViewModels"
+             xmlns:toolsVM="clr-namespace:DesktopUI.ViewModels.Employee"
+             xmlns:tools="clr-namespace:DesktopUI.Views.CustomControls.Employee"
+             xmlns:local="clr-namespace:DesktopUI.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="1000" d:DesignWidth="1600">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type toolsVM:AdditionVM}">
+            <tools:Addition/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type toolsVM:CardVM}">
+            <tools:Card/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type toolsVM:TableVM}">
+            <tools:Table/>
+        </DataTemplate>
+    </UserControl.Resources>
+    
+    <UserControl.DataContext>
+        <vm:EmployeeVM/>
+    </UserControl.DataContext>
+    
+    <Grid KeyDown="Grid_KeyDown">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Background="{StaticResource SCB-Main}"/>
+        <Button Style="{StaticResource IsolatedBtn}"
+                Content="Новый сотрудник" 
+                FontSize="20"
+                BorderThickness="2"
+                Background="{StaticResource SCB-Background}"
+                Margin="5 5 20 5"
+                Padding="5"
+                BorderBrush="{StaticResource SCB-Content}"
+                HorizontalAlignment="Right"
+                Command="{Binding AdditionCommand}"
+                Width="240"/>
+
+        <TextBlock Style="{StaticResource ArticleText}"
+                   Text="{Binding Title}"
+                   FontSize="20"/>
+        <ContentControl Content="{Binding ObserveMode}"
+                        Grid.Row="1"/>
+    </Grid>
+</UserControl>

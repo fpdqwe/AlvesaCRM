@@ -1,5 +1,7 @@
 ﻿using DAL.Interfaces;
 using Domain.Entities;
+using Domain.Entities.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
@@ -7,20 +9,49 @@ namespace DAL.Repository
 	{
 		public UserRepository(IContextManager contextManager) : base(contextManager) { }
 
-		public User FindByLogin(string login)
+		public async Task<User> FindByLogin(string login)
 		{
             using (var db = CreateDatabaseContext())
             {
-                return db.Set<User>().FirstOrDefault(u => u.Login == login);
+                return await db.Set<User>().FirstOrDefaultAsync(u => u.Login == login);
             }
         }
 
-        public bool ExistUser(string login)
+        public async Task<bool> ExistUser(string login)
         {
             using (var db = CreateDatabaseContext())
             {
-                return db.Set<User>().Count(u => u.Login == login) > 0;
+                return await db.Set<User>().CountAsync(u => u.Login == login) > 0;
             }
         }
-    }
+
+		public async Task<List<User>> GetLastByCompany(Company company, int count = 20)
+		{
+			using (var context = CreateDatabaseContext())
+			{
+				if (context.Users != null)
+				{
+					return await context.Users
+						.Where(x => x.Company.Id == company.Id)
+						.OrderByDescending(x => x.Id)
+						.Take(count)
+						.ToListAsync();
+				}
+				return new List<User>();
+			}
+		}
+
+		public int GetLastId()
+		{
+			using (var context = CreateDatabaseContext())
+			{
+				if(context.Users != null)
+				{
+					var i = context.Users.Count();
+					return i;
+				}
+				return 0;
+			}
+		}
+	}
 }

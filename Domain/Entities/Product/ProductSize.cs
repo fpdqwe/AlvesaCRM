@@ -7,7 +7,8 @@ namespace Domain.Entities.Product
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; }
+        public string? Name { get; set; }
+        public string? Barcode { get; set; }
         public int Quantity { get; set; }
         public int ColorId { get; set; }
         public ProductColor Color { get; set; }

@@ -1,5 +1,6 @@
 ﻿using DAL.Interfaces;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DAL.Repository
 {
@@ -14,7 +15,7 @@ namespace DAL.Repository
 		{
 			return _contextManager.CreateDatabaseContext();
 		}
-        public T Add(T entity)
+        public async Task<T> Add(T entity)
         {
             using (var context = CreateDatabaseContext())
             {
@@ -23,53 +24,59 @@ namespace DAL.Repository
                 if (iDbEntity == null)
                     throw new ArgumentException("entity should be IDbEntity type", "entity");
 
-                context.Set<T>().Add(entity);
+                await context.Set<T>().AddAsync(entity);
                 context.SaveChanges();
             }
+            
             return entity;
         }
-        public void Delete(T entity)
+        public async Task<bool> Delete(T entity)
 		{
             using (var context = CreateDatabaseContext())
             {
-                var iDbEntity = entity as IDbEntity;
+                try
+                {
+                    var iDbEntity = entity as IDbEntity;
 
-                if (iDbEntity == null)
-                    throw new ArgumentException("entity should be IDbEntity type", "entity");
+                    if (iDbEntity == null)
+                        throw new ArgumentException("entity should be IDbEntity type", "entity");
 
-                context.Set<T>().Remove(entity);
-                context.SaveChanges();
+                    context.Set<T>().Remove(entity);
+                    context.SaveChanges();
+                    return true;
+                }
+                catch (Exception ex) { return false; }
             }
         }
 
-		public T Find(int entityId)
+		public async Task<T> Find(int entityId)
 		{
 			using(var context = CreateDatabaseContext())
 			{
-                return context.Set<T>().Find(entityId);
+                return await context.Set<T>().FindAsync(entityId);
             }
 		}
 
-		public List<T> GetAll()
+		public async Task<List<T>> GetAll()
 		{
 			using(var context = CreateDatabaseContext())
 			{
-				return context.Set<T>().ToList();
+				return await context.Set<T>().ToListAsync();
 			}
 		}
 
-		public T SaveOrUdate(T entity)
+		public async Task<T> SaveOrUdate(T entity)
 		{
             var iDbEntity = entity as IDbEntity;
 
             if (iDbEntity == null)
                 throw new ArgumentException("entity should be IDbEntity type", "entity");
 
-            return iDbEntity.GetPrimaryKey() == 0 ? Add(entity) : Update(entity);
+            return iDbEntity.GetPrimaryKey() == 0 ? await Add(entity) : await Update(entity);
 
         }
 
-		public T Update(T entity)
+		public async Task<T> Update(T entity)
 		{
             using (var context = CreateDatabaseContext())
             {
@@ -77,9 +84,9 @@ namespace DAL.Repository
                 if (iDbEntity == null)
                     throw new ArgumentException("entity should be IDbEntity type", "entity");
 
-                var attachedEntity = context.Set<T>().Find(iDbEntity.GetPrimaryKey());
-                context.Set<T>().Update(attachedEntity);
-                context.SaveChanges();
+                var attachedEntity = await context.Set<T>().FindAsync(iDbEntity.GetPrimaryKey());
+                context.Entry(attachedEntity).CurrentValues.SetValues(entity);
+                await context.SaveChangesAsync();
             }
             return entity;
         }

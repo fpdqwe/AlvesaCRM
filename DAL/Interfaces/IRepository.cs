@@ -3,11 +3,11 @@
 	public interface IRepository<T> where T : class
 	{
 		ApplicationDbContext CreateDatabaseContext();
-		List<T> GetAll();
-		T Find(int entityId);
-		T SaveOrUdate(T entity);
-		T Add(T entity);
-		T Update(T entity);
-		void Delete(T entity);
+		Task<List<T>> GetAll();
+		Task<T> Find(int entityId);
+		Task<T> SaveOrUdate(T entity);
+		Task<T> Add(T entity);
+		Task<T> Update(T entity);
+		Task<bool> Delete(T entity);
 	}
 }
