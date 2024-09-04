@@ -25,7 +25,7 @@
         <vm:EmployeeVM/>
     </UserControl.DataContext>
     
-    <Grid>
+    <Grid KeyDown="Grid_KeyDown">
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
             <RowDefinition/>
@@ -40,10 +40,12 @@
                 Padding="5"
                 BorderBrush="{StaticResource SCB-Content}"
                 HorizontalAlignment="Right"
+                Command="{Binding AdditionCommand}"
                 Width="240"/>
 
         <TextBlock Style="{StaticResource ArticleText}"
-                   Text="{Binding Title}"/>
+                   Text="{Binding Title}"
+                   FontSize="20"/>
         <ContentControl Content="{Binding ObserveMode}"
                         Grid.Row="1"/>
     </Grid>

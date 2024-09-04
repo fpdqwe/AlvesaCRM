@@ -1,5 +1,6 @@
 ﻿using DesktopUI.Models;
 using DesktopUI.Utilities;
+using DesktopUI.Utilities.Services;
 using Domain.Entities;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -20,7 +21,15 @@ namespace DesktopUI.ViewModels.Employee
 				OnPropertyChanged(nameof(Employee));
 			}
 		}
-
+		public User SelectedUser
+		{
+			get => EmployeeService.Current;
+			set
+			{
+				EmployeeService.SetCurrent(value);
+				OnPropertyChanged(nameof(SelectedUser));
+			}
+		}
         public TableVM()
         {
             _model = new EmployeeModel();

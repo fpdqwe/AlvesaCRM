@@ -15,10 +15,11 @@ namespace Domain.Entities
         [Required(AllowEmptyStrings = false, ErrorMessage = @"Please input login")]
         [StringLength(50, ErrorMessage = @"Login должен быть меньше 50 символов")]
         public string Login { get; set; }
-		public string? FirstName { get; set; }
-		public string? LastName { get; set; }
-		public string? Email { get; set; }
-		public string? PhoneNumber { get; set; }
+
+		public string? FirstName { get; set; } = "Не указано";
+		public string? LastName { get; set; } = "Не указана";
+		public string? Email { get; set; } = "Не указан";
+		public string? PhoneNumber { get; set; } = "Не указан";
 		public UserType UserType { get; set; }
 		public int CompanyId { get; set; }
 		public Company Company { get; set; }

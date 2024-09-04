@@ -6,12 +6,184 @@
              xmlns:vm="clr-namespace:DesktopUI.ViewModels.Employee"
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Employee"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="1400">
     <UserControl.DataContext>
         <vm:CardVM/>
     </UserControl.DataContext>
-    
+
     <Grid>
-            
+        <Popup IsOpen="{Binding IsNotificationOpen}"
+               StaysOpen="False"
+               Opened="Popup_Opened"
+               Margin="0 20 0 0"
+               Placement="Top">
+            <Border Style="{StaticResource EmptyBorder}">
+                <TextBlock Style="{StaticResource ArticleText}"
+                           Text="Изменения сохранены успешно"
+                           Margin="20"/>
+            </Border>
+        </Popup>
+
+        <Grid Grid.Row="0" Margin="50 15"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Style="{StaticResource UnderLine}"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Имя сотрудника"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             Grid.Column="1"
+                             Text="{Binding User.FirstName, Mode=TwoWay}"
+                             HorizontalAlignment="Left"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="1"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Фамилия сотрудника"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                             Text="{Binding User.LastName, Mode=TwoWay}"
+                             Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="2"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Тел. номер"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                             Text="{Binding User.PhoneNumber, Mode=TwoWay}"
+                             Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="3"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Эл. почта"/>
+                    <TextBox Style="{StaticResource DefaultTextInput}"
+                             HorizontalAlignment="Left"
+                             Text="{Binding User.Email, Mode=TwoWay}"
+                             Grid.Column="1"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="4"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Должность"/>
+                    <ComboBox Grid.Column="1"
+                              Height="48"
+                              Width="390"
+                              Margin="5 10"
+                              Padding="0"
+                              HorizontalAlignment="Left"
+                              SelectedItem="{Binding UserStringType}"
+                              ItemsSource="{Binding UserTypes}"
+                              Style="{StaticResource TestStyle}"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="5"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Логин"/>
+                    <TextBox Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             Text="{Binding User.Login, Mode=TwoWay}"
+                             Style="{StaticResource DefaultTextInput}"/>
+                </Grid>
+            </Border>
+
+            <Border Style="{StaticResource UnderLine}"
+                    Grid.Row="6"
+                    Height="70">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               HorizontalAlignment="Right"
+                               Margin="0 0 25 0"
+                               Text="Пароль"/>
+                    <TextBox Grid.Column="1"
+                             HorizontalAlignment="Left"
+                             Text="{Binding User.Password, Mode=TwoWay}"
+                             Style="{StaticResource DefaultTextInput}"/>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <Button 
+            Grid.Row="1"
+            Width="200"
+            Height="80"
+            VerticalAlignment="Bottom"
+            Margin="0 0 0 20"
+            Content="Сохранить"
+            Command="{Binding UpdateCommand}"
+            Style="{StaticResource IsolatedBtn}">
+
+        </Button>
     </Grid>
 </UserControl>

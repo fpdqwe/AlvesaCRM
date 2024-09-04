@@ -14,10 +14,11 @@ namespace DAL.Repository
 			{
 				if(context.ProductModels != null)
 				{
-					return await context.ProductModels
+					var list = await context.ProductModels
 						.OrderByDescending(x => x.Id)
 						.Take(count)
 						.ToListAsync();
+					return list;
 				}
 				return new List<ProductModel>();
 			}

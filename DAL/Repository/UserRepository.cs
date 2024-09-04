@@ -40,5 +40,18 @@ namespace DAL.Repository
 				return new List<User>();
 			}
 		}
+
+		public int GetLastId()
+		{
+			using (var context = CreateDatabaseContext())
+			{
+				if(context.Users != null)
+				{
+					var i = context.Users.Count();
+					return i;
+				}
+				return 0;
+			}
+		}
 	}
 }

@@ -14,9 +14,10 @@ namespace DesktopUI.Models
         {
             _userRepository = new UserRepository(new ContextManager());
         }
-        public async Task<bool> Create(User entity)
+        public async Task<bool> Save(User entity)
 		{
-			if( await _userRepository.Add(entity) != null)
+			if(entity.Id == 0) { entity.Id = _userRepository.GetLastId() + 1; }
+			if(await _userRepository.Add(entity) != null)
 			{
 				return true;
 			};

@@ -18,7 +18,7 @@ namespace DesktopUI.Utilities.Services
         /// <param name="product">Product to set</param>
         public static void SetCurrent(Product product)
         {
-            if(product != null && Current != product){
+            if(Current == null || (product != null && Current.Equals(product))){
 				Current = product;
 				CurrentChangedEvent.Invoke(product);
 			}

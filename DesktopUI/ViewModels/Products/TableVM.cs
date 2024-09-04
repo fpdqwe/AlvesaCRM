@@ -7,6 +7,8 @@ using Model = DesktopUI.Models.ProductModel;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
 using DesktopUI.Utilities;
+using System.Windows.Input;
+using DesktopUI.Commands;
 
 namespace DesktopUI.ViewModels.Products
 {
@@ -27,22 +29,22 @@ namespace DesktopUI.ViewModels.Products
 				OnPropertyChanged(nameof(Products));
 			}
 		}
-
+		public Product SelectedProduct
+		{
+			get => ProductService.Current;
+			set
+			{
+				ProductService.SetCurrent(value);
+				OnPropertyChanged(nameof(SelectedProduct));
+			}
+		}
 
 		// Ctors
 		public TableVM()
 		{
 			_model = new Model();
+
 			ProductsChangedEvent += OnProductsChanged;
-			//_products = new List<Product>(){
-			//	new Product{Id = 1,
-			//	CompanyId = AuthService.CurrentUser.CompanyId,
-			//	ModelNumber = "test",
-			//	Name = "Test",
-			//	Description = "Test",
-				
-			//}
-			//};
 			Debug.WriteLine("TableVM initialized");
 			Init();
 		}

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -23,6 +24,13 @@ namespace DesktopUI.Views.CustomControls.Employee
 		public Card()
 		{
 			InitializeComponent();
+		}
+
+		private async void Popup_Opened(object sender, EventArgs e)
+		{
+			var popup = sender as Popup;
+			await Task.Delay(3000);
+			popup.IsOpen = false;
 		}
 	}
 }

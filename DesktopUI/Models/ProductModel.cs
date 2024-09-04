@@ -44,6 +44,11 @@ namespace DesktopUI.Models
 		public async Task<IList<Product>> GetLast(int count = 20)
 		{
 			var newList = await ProductRepository.GetLast(count);
+			foreach (var item in newList)
+			{
+				var temp = await _techSpecRepository.FindByModel(item.Id);
+				item.TechSpecs = temp.ToList();
+			}
 			Debug.WriteLine(newList.First().TechSpecs);
 			ProductService.SetCurrentList(newList);
 			return newList;

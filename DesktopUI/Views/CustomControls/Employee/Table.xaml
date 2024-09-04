@@ -9,56 +9,64 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="TableItem">
-            <Border Style="{StaticResource EmptyBorder}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
+            <Grid Height="80">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock Style="{StaticResource ArticleText}"
-                               Text="{Binding Path=Id}"/>
-                    
-                    <Border Style="{StaticResource EmptyBorder}"
-                            Grid.Column="1">
-                        <StackPanel>
-                        <TextBlock Style="{StaticResource ArticleText}"
-                               Text="{Binding Path=FirstName}"/>
-                        <TextBlock Style="{StaticResource ArticleText}"
-                               Text="{Binding Path=LastName}"/>
-                        </StackPanel>
-                    </Border>
+                <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding Id}"/>
 
-                    <Grid Grid.Column="2">
+                <Border Style="{StaticResource EmptyBorder}"
+                        Grid.Column="1"
+                        Margin="5">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="0"
-                                   Style="{StaticResource ArticleText}"
-                                   Text="Тел."/>
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="0"
-                                   Style="{StaticResource ArticleText}"
-                                   Text="Почта"/>
-                        <TextBlock Grid.Row="0"
-                                   Grid.Column="1"
-                                   Style="{StaticResource ArticleText}"
-                                   Text="{Binding Path=PhoneNumber}"/>
-                        <TextBlock Grid.Row="1"
-                                   Grid.Column="1"
-                                   Style="{StaticResource ArticleText}"
-                                   Text="{Binding Path=Email}"/>
+                        
+                        <TextBlock Style="{StaticResource ArticleText}"
+                                   Text="{Binding FirstName}"/>
+                        <TextBlock Style="{StaticResource ArticleText}"
+                                   Text="{Binding LastName}"
+                                   Grid.Row="1"/>
                     </Grid>
+                </Border>
+
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="0"
+                               Style="{StaticResource ArticleText}"
+                               Text="Тел."/>
+                    
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="0"
+                               Style="{StaticResource ArticleText}"
+                               Text="Почта"/>
+                    
+                    <TextBlock Grid.Row="0"
+                               Grid.Column="1"
+                               Style="{StaticResource ArticleText}"
+                               Text="{Binding PhoneNumber}"/>
+                    
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="1"
+                               Style="{StaticResource ArticleText}"
+                               Text="{Binding Email}"/>
                 </Grid>
-            </Border>
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
     
@@ -67,8 +75,10 @@
     </UserControl.DataContext>
     
     <Grid>
-        <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+        <ListBox Margin="25 5"
+                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                  ItemsSource="{Binding Employee}"
+                 SelectedItem="{Binding SelectedUser}"
                  ItemTemplate="{StaticResource TableItem}"
                  Background="Transparent">
         </ListBox>

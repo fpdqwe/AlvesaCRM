@@ -41,8 +41,7 @@
                     Command="{Binding TableMode}"
                     Content="Table" Width="100"/>
         </StackPanel>
-        <Grid Grid.Row="1"
-              Margin="50">
+        <Grid Grid.Row="1">
             <ContentControl Content="{Binding ObserveMode}">
                 
             </ContentControl>

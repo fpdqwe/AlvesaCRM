@@ -6,12 +6,116 @@
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Products"
              xmlns:vm="clr-namespace:DesktopUI.ViewModels.Products"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1000" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ListBox_TechSpecItem">
+            
+        </DataTemplate>
+    </UserControl.Resources>
+    
     <UserControl.DataContext>
         <vm:CardVM/>
     </UserControl.DataContext>
     
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Background="{StaticResource SCB-Main}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <Border Style="{StaticResource EmptyBorder}"
+                        Margin="5">
+                    <Image Source="/Resources/Images/Tshirt.png"
+                           Margin="5"/>
+                </Border>
+                <Grid Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding Name}"/>
+                    <TextBlock Style="{StaticResource ArticleText}"
+                               Text="{Binding ModelNumber}"
+                               Grid.Row="1"/>
+                </Grid>
+                
+            </Grid>
+        </Border>
+
+
+        <TabControl Grid.Row="1" DataContext="{}">
+            <TabItem Header="ТЗ"
+                     Width="200"
+                     Height="30">
+                
+                <ListBox ItemsSource="{Binding TechSpecs}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+
+                                <StackPanel Orientation="Horizontal"
+                                            Grid.Row="0">
+                                    <TextBlock Style="{StaticResource ArticleText}"
+                                               Text="ТЗ от "/>
+                                    <TextBlock Style="{StaticResource ArticleText}"
+                                               Text="{Binding StartDate}"/>
+                                    <TextBlock Style="{StaticResource ArticleText}"
+                                               Text="   Содеражние  "/>
+                                    <TextBlock Style="{StaticResource ArticleText}"
+                                               Text="{Binding Amount}"/>
+                                </StackPanel>
+
+                                <ListBox ItemsSource="{Binding Colors}"
+                                         Grid.Row="1">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ListBox ItemsSource="{Binding Sizes}">
+                                                
+                                            </ListBox>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
+            <TabItem Header="Редактирование ТПО"
+                     Width="200">
+                
+            </TabItem>
+            <TabItem Header="Баланс"
+                     Width="200">
+
+            </TabItem>
+            <TabItem Header="Внесение ОО"
+                     Width="200">
+
+            </TabItem>
+            <TabItem Header="Сводка"
+                     Width="200">
+
+            </TabItem>
+            <TabItem Header="Управление"
+                     Width="200">
+
+            </TabItem>
+        </TabControl>
         
     </Grid>
 </UserControl>

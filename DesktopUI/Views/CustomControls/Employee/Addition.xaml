@@ -12,12 +12,7 @@
     </UserControl.DataContext>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        
-        <Popup IsOpen="False"
+        <Popup IsOpen="{Binding IsNotificationOpen}"
                StaysOpen="False"
                Opened="Popup_Opened"
                Placement="Center">
@@ -27,16 +22,8 @@
                            Margin="20"/>
             </Border>
         </Popup>
-        
-        <Border Background="{StaticResource SCB-Main}"
-                BorderBrush="{StaticResource SCB-Background}"
-                BorderThickness="0 0 0 2">
-            <TextBlock Style="{StaticResource ArticleText}"
-                       Text="Добавление сотрудника"/>
-        </Border>
 
-
-        <Grid Grid.Row="1" Margin="50 15"
+        <Grid Grid.Row="0" Margin="50 15"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
             <Grid.RowDefinitions>
@@ -61,6 +48,7 @@
                                Text="Имя сотрудника"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
                              Grid.Column="1"
+                             Text="{Binding NewUser.FirstName, Mode=TwoWay}"
                              HorizontalAlignment="Left"/>
                 </Grid>
             </Border>
@@ -79,7 +67,8 @@
                                Text="Фамилия сотрудника"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
                              HorizontalAlignment="Left"
-                            Grid.Column="1"/>
+                             Text="{Binding NewUser.LastName, Mode=TwoWay}"
+                             Grid.Column="1"/>
                 </Grid>
             </Border>
 
@@ -97,6 +86,7 @@
                                Text="Тел. номер"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
                              HorizontalAlignment="Left"
+                             Text="{Binding NewUser.PhoneNumber, Mode=TwoWay}"
                              Grid.Column="1"/>
                 </Grid>
             </Border>
@@ -115,6 +105,7 @@
                                Text="Эл. почта"/>
                     <TextBox Style="{StaticResource DefaultTextInput}"
                              HorizontalAlignment="Left"
+                             Text="{Binding NewUser.Email, Mode=TwoWay}"
                              Grid.Column="1"/>
                 </Grid>
             </Border>
@@ -157,6 +148,7 @@
                                Text="Логин"/>
                     <TextBox Grid.Column="1"
                              HorizontalAlignment="Left"
+                             Text="{Binding NewUser.Login, Mode=TwoWay}"
                              Style="{StaticResource DefaultTextInput}"/>
                 </Grid>
             </Border>
@@ -175,6 +167,7 @@
                                Text="Пароль"/>
                     <TextBox Grid.Column="1"
                              HorizontalAlignment="Left"
+                             Text="{Binding NewUser.Password, Mode=TwoWay}"
                              Style="{StaticResource DefaultTextInput}"/>
                 </Grid>
             </Border>
@@ -187,6 +180,7 @@
             VerticalAlignment="Bottom"
             Margin="0 0 0 20"
             Content="Добавить"
+            Command="{Binding AddCommand}"
             Style="{StaticResource IsolatedBtn}">
             
         </Button>

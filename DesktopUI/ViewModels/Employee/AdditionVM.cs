@@ -1,4 +1,5 @@
-﻿using DesktopUI.Models;
+﻿using DesktopUI.Commands;
+using DesktopUI.Models;
 using DesktopUI.Utilities;
 using Domain.Entities;
 using Domain.Enums;
@@ -15,6 +16,7 @@ namespace DesktopUI.ViewModels.Employee
 		private string[] _userTypes = { "Раскройщик", "Мастер", "Швея", "Утюжильщик", "Упаковщик", "Швея" };
 		private User _newUser;
 		private EmployeeModel _model;
+		private bool _isNotificationOpen;
 
 		// Properties
 		public User NewUser
@@ -26,7 +28,15 @@ namespace DesktopUI.ViewModels.Employee
 				OnPropertyChanged(nameof(NewUser));
 			}
 		}
-
+		public bool IsNotificationOpen 
+		{
+			get => _isNotificationOpen;
+			set
+			{
+				_isNotificationOpen = value;
+				OnPropertyChanged(nameof(IsNotificationOpen));
+			}
+		}
 		public string NewUserType
 		{
 			get
@@ -91,26 +101,28 @@ namespace DesktopUI.ViewModels.Employee
         // Ctors
         public AdditionVM()
         {
+			_isNotificationOpen = false;
             _model = new EmployeeModel();
 			_newUser = new User();
+			_newUser.CompanyId = AuthService.CurrentUser.Company.Id;
+			_newUser.UserType = UserType.Seamstress;
+			AddCommand = new RelayCommand(Add);
         }
 
 		// Commands
 		public ICommand AddCommand { get; set; }
 		public async void Add(object obj)
 		{
-			if(await _model.Create(NewUser))
+			if(await _model.Save(NewUser))
 			{
-
+				IsNotificationOpen = true;
 			}
 		}
 
 		// Public Methods
 		public void PopupFadeCompleted()
 		{
-
+			IsNotificationOpen = false;
 		}
-
-
 	}
 }
