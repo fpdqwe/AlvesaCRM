@@ -10,6 +10,7 @@ namespace DesktopUI.Utilities
 		public static event AuthHandler UserChanged;
 
 		public static User? CurrentUser { get; private set; }
+		public static RepositoryManager Repository { get; private set; }
 
 		public static void LoginSuccess(User user)
 		{
@@ -31,6 +32,11 @@ namespace DesktopUI.Utilities
 			if(CurrentUser == null) { return; }
 			CurrentUser.Company = company;
 			UserChanged?.Invoke(CurrentUser);
+		}
+
+		public static void InitRepositories()
+		{
+			Repository = new RepositoryManager();
 		}
 	}
 }

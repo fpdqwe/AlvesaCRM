@@ -16,7 +16,6 @@ namespace DesktopUI.ViewModels.Products
 	public class AdditionVM : INotifyPropertyChanged
 	{
 		// Fields and properties
-		private const string UNASSIGNED = "UNASSIGNED";
 		private const string ADDING_ERROR = "Что-то пошло не так, модель не добавлена...";
 		private const string ADDING_SUCCESS = "Модель успешно добавлена в систему.";
 		private Product _product;
@@ -77,7 +76,7 @@ namespace DesktopUI.ViewModels.Products
 		{
 			if(Product == null) { return;}
 			Product.CompanyId = AuthService.CurrentUser.CompanyId;
-			Product.TechSpecs = new List<TechSpec>() { CreateEmptyTS() };
+			Product.TechSpecs = new List<TechSpec>() { Model.CreateTS() };
 			if (await _model.Add(Product)) Message = ADDING_ERROR;
 			else Message = ADDING_SUCCESS;
 		}
@@ -91,32 +90,6 @@ namespace DesktopUI.ViewModels.Products
 		{
 			if (PropertyChanged != null)
 				PropertyChanged(this, new PropertyChangedEventArgs(prop));
-		}
-
-		// Private methods
-		private TechSpec CreateEmptyTS()
-		{
-			var size = new ProductSize()
-			{
-				Name = UNASSIGNED,
-				Barcode = UNASSIGNED,
-				Quantity = 0
-			};
-			var color = new ProductColor()
-			{
-				Name = UNASSIGNED,
-				Sizes = new List<ProductSize>() { size},
-				TotalQuantity = 0
-			};
-			var ts = new TechSpec()
-			{
-				Colors = new List<ProductColor>() { color },
-				SequenceNum = 0,
-				TotalQuantity = 0,
-				ProductionPrice = ProductionPrice,
-				Price = Price,
-			};
-			return ts;
 		}
 	}
 }

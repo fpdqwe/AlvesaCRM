@@ -8,16 +8,16 @@ namespace DesktopUI.Models
 {
 	class EmployeeModel : IGenericModel<User>
 	{
-		private UserRepository _userRepository;
+		private UserRepository _repository;
 
         public EmployeeModel()
         {
-            _userRepository = new UserRepository(new ContextManager());
+            _repository = AuthService.Repository.UserRepository;
         }
         public async Task<bool> Save(User entity)
 		{
-			if(entity.Id == 0) { entity.Id = _userRepository.GetLastId() + 1; }
-			if(await _userRepository.Add(entity) != null)
+			if(entity.Id == 0) { entity.Id = _repository.GetLastId() + 1; }
+			if(await _repository.Add(entity) != null)
 			{
 				return true;
 			};
@@ -26,17 +26,17 @@ namespace DesktopUI.Models
 
 		public async Task<bool> Delete(User entity)
 		{
-			return await _userRepository.Delete(entity);
+			return await _repository.Delete(entity);
 		}
 
 		public async Task<IList<User>> Read(int count = 20)
 		{
-			return await _userRepository.GetLastByCompany(AuthService.CurrentUser.Company, count);
+			return await _repository.GetLastByCompany(AuthService.CurrentUser.Company, count);
 		}
 
 		public async Task<bool> Update(User entity)
 		{
-			if (await _userRepository.Update(entity) != null)
+			if (await _repository.Update(entity) != null)
 			{
 				return true;
 			}

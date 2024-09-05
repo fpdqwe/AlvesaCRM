@@ -5,12 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views"
              xmlns:vm="clr-namespace:DesktopUI.ViewModels"
-             xmlns:utils="clr-namespace:DesktopUI.Utilities"
+             xmlns:conv="clr-namespace:DesktopUI.Utilities.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1272">
 
     <UserControl.Resources>
-        <utils:CompanyTypeToStringConverter x:Key="CompanyTypeToString"/>
+        <conv:CompanyTypeToStringConverter x:Key="CompanyTypeToString"/>
     </UserControl.Resources>
     
     <UserControl.DataContext>

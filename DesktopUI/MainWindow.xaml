@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:DesktopUI"
         xmlns:views="clr-namespace:DesktopUI.Views"
         xmlns:vm="clr-namespace:DesktopUI.ViewModels"
-        xmlns:utilities="clr-namespace:DesktopUI.Utilities"
+        xmlns:utilities="clr-namespace:DesktopUI.Utilities.Converters"
         mc:Ignorable="d"
         WindowState="Maximized"
         Title="MainWindow" Width="1500" Height="1000">

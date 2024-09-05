@@ -3,12 +3,15 @@ using DAL.Repository;
 using Product = Domain.Entities.Product.ProductModel;
 using DesktopUI.Utilities.Services;
 using System.Diagnostics;
+using DesktopUI.Utilities;
+using Domain.Entities.Product;
 
 namespace DesktopUI.Models
 {
 	public class ProductModel
 	{
-        // Fields and properties
+		// Fields and properties
+		private const string UNASSIGNED = "UNASSIGNED";
 		public ProductModelRepository ProductRepository;
         private TechSpecRepository _techSpecRepository;
         private ProductColorRepository _colorRepository;
@@ -21,11 +24,10 @@ namespace DesktopUI.Models
         // Ctors
         public ProductModel()
         {
-            var contextManager = new ContextManager();
-            ProductRepository = new ProductModelRepository(contextManager);
-            _techSpecRepository = new TechSpecRepository(contextManager);
-            _colorRepository = new ProductColorRepository(contextManager);
-            _sizeRepository = new ProductSizeRepository(contextManager);
+            ProductRepository = AuthService.Repository.ProductModelRepository;
+			_techSpecRepository = AuthService.Repository.TechSpecRepository;
+			_colorRepository = AuthService.Repository.ProductColorRepository;
+			_sizeRepository = AuthService.Repository.ProductSizeRepository;
         }
 
 		// Public methods
@@ -54,6 +56,63 @@ namespace DesktopUI.Models
 			return newList;
 		}
 
+		public async Task<TechSpec> AddTechSpec(Product product, TechSpec reference = null)
+		{
+			if (product == null) return null;
+			product.TechSpecs.Add(CreateTS(reference));
+			var result = await ProductRepository.SaveOrUdate(product);
+			return result.TechSpecs.Last();
+		}
+
+		public static TechSpec CreateTS(TechSpec reference = null)
+		{
+			TechSpec result = new TechSpec();
+			if (reference != null)
+			{
+				result.Colors = new List<ProductColor>(reference.Colors.Count);
+				foreach (var color in reference.Colors)
+				{
+					var newColor = new ProductColor();
+					newColor.Sizes = new List<ProductSize>(color.Sizes.Count);
+					foreach (var size in color.Sizes)
+					{
+						newColor.Sizes.Add(new ProductSize()
+						{
+							Name = size.Name,
+							Barcode = size.Barcode,
+							Quantity = 0
+						});
+					}
+					newColor.TotalQuantity = 0;
+					newColor.Name = color.Name;
+					result.Colors.Add(newColor);
+				}
+			}
+			else
+			{
+				var size = new ProductSize()
+				{
+					Name = UNASSIGNED,
+					Barcode = UNASSIGNED,
+					Quantity = 0
+				};
+				var color = new ProductColor()
+				{
+					Name = UNASSIGNED,
+					Sizes = new List<ProductSize>() { size },
+					TotalQuantity = 0
+				};
+				result = new TechSpec()
+				{
+					Colors = new List<ProductColor>() { color },
+					SequenceNum = 0,
+					TotalQuantity = 0,
+					ProductionPrice = reference.ProductionPrice,
+					Price = reference.Price,
+				};
+			}
+			return result;
+		}
 		// Private mehods
 
 

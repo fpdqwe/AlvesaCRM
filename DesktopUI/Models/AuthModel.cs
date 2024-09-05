@@ -1,4 +1,4 @@
-﻿using DAL;
+﻿using DesktopUI.Models.Exceptions;
 using DAL.Repository;
 using DesktopUI.Utilities;
 using Domain.Entities;
@@ -7,18 +7,20 @@ namespace DesktopUI.Models
 {
     public class AuthModel
     {
+		private static bool _isRequesting = false;
         private UserRepository _userRepository;
 		private CompanyRepository _companyRepository;
 
         public AuthModel()
         {
-			var contextManager = new ContextManager();
-            _userRepository = new UserRepository(contextManager);
-			_companyRepository = new CompanyRepository(contextManager);
+			_userRepository = AuthService.Repository.UserRepository;
+			_companyRepository = AuthService.Repository.CompanyRepository;
         }
 
 		public async Task<bool> TryAuthUser(User credentials)
 		{
+			if (_isRequesting) { throw new MultipleRequestsException(); }
+			_isRequesting = true;
 			var user = await _userRepository.FindByLogin(credentials.Login);
 			if (user == null)
 			{
@@ -27,9 +29,14 @@ namespace DesktopUI.Models
 				
 				await _userRepository.Add(credentials);
 				AuthService.LoginSuccess(credentials);
+				_isRequesting = false;
 				return true;
 			}
-			else return false;
+			else
+			{
+				_isRequesting = false;
+				return false;
+			}
 		}
 		
 		public async Task<bool> TryLogIn(User credentials)

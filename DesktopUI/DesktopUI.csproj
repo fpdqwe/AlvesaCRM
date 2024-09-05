@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\Gear.png" />
+    <None Remove="Resources\Images\PlusIcon.png" />
+    <None Remove="Resources\Images\SvodkaIcon.png" />
+    <None Remove="Resources\Images\TechSpecIcon.png" />
+    <None Remove="Resources\Images\TechSpecIcon2.png" />
+    <None Remove="Resources\Images\TPOIcon.png" />
     <None Remove="Resources\Images\Tshirt.png" />
   </ItemGroup>
 
@@ -22,6 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\Images\Gear.png" />
+    <Resource Include="Resources\Images\PlusIcon.png" />
+    <Resource Include="Resources\Images\SvodkaIcon.png" />
+    <Resource Include="Resources\Images\TechSpecIcon.png" />
+    <Resource Include="Resources\Images\TechSpecIcon2.png" />
+    <Resource Include="Resources\Images\TPOIcon.png" />
     <Resource Include="Resources\Images\Tshirt.png" />
   </ItemGroup>
 

@@ -34,31 +34,14 @@
         </Style.Triggers>
     </Style>
 
-    <Style TargetType="ListBoxItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="ListBoxItem">
-                    <Border Style="{StaticResource TableContentBorder}"
-                            x:Name="border">
-                        <ContentPresenter/>
-                    </Border>
-
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource SCB-DarkMain}"/>
-                        </Trigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="ListBox">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
-        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+    <Style x:Key="StrictTableContentBorder" TargetType="Border">
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Background" Value="{StaticResource SCB-DarkBckground}"/>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource SCB-DarkMain}"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style TargetType="Popup" x:Key="FadeOutPopupStyle">
@@ -70,9 +53,9 @@
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetProperty="Opacity"
-                                             From="1"
-                                             To="0"
-                                             Duration="0:0:4"/>
+                                         From="1"
+                                         To="0"
+                                         Duration="0:0:4"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.EnterActions>

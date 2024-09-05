@@ -1,5 +1,6 @@
 ﻿using DAL;
 using DAL.Repository;
+using DesktopUI.Utilities;
 using Domain.Entities;
 using Domain.Enums;
 
@@ -7,19 +8,18 @@ namespace DesktopUI.Models
 {
     public class CompanyModel
     {
-        private CompanyRepository _companyRepository;
+        private CompanyRepository _repository;
         public CompanyModel()
         {
             
-            var contextManager = new ContextManager();
-            _companyRepository = new CompanyRepository(contextManager);
+            _repository = AuthService.Repository.CompanyRepository;
         }
 
         public async Task<bool> UpdateCompany(Company company)
         {
             try
             {
-                await _companyRepository.Update(company);
+                await _repository.Update(company);
             }
             catch (Exception ex) { return false; }
             return true;
