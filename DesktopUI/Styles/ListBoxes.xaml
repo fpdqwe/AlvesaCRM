@@ -31,7 +31,7 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" TargetName="border" Value="{StaticResource SCB-Background}"/>
+                            <Setter Property="Background" TargetName="border" Value="{StaticResource SCB-DarkMain}"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

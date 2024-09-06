@@ -36,7 +36,7 @@
 
     <Style x:Key="StrictTableContentBorder" TargetType="Border">
         <Setter Property="Margin" Value="5"/>
-        <Setter Property="Background" Value="{StaticResource SCB-DarkBckground}"/>
+        <Setter Property="Background" Value="{StaticResource SCB-Background}"/>
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="BorderBrush" Value="{StaticResource SCB-DarkMain}"/>

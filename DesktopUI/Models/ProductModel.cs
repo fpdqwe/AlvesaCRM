@@ -31,7 +31,6 @@ namespace DesktopUI.Models
         }
 
 		// Public methods
-
 		public async Task<bool> Add(Product entity)
 		{
 			try
@@ -42,7 +41,6 @@ namespace DesktopUI.Models
 			ProductService.SetCurrentList(await GetLast());
             return true;
 		}
-
 		public async Task<IList<Product>> GetLast(int count = 20)
 		{
 			var newList = await ProductRepository.GetLast(count);
@@ -63,7 +61,6 @@ namespace DesktopUI.Models
 			var result = await ProductRepository.SaveOrUdate(product);
 			return result.TechSpecs.Last();
 		}
-
 		public static TechSpec CreateTS(TechSpec reference = null)
 		{
 			TechSpec result = new TechSpec();
@@ -113,9 +110,46 @@ namespace DesktopUI.Models
 			}
 			return result;
 		}
+
+		public async Task<bool> AddColor(ProductColor color)
+		{
+			if(color == null) throw new ArgumentNullException(nameof(color));
+			var result = await _colorRepository.Add(color);
+			if(result != null) return true;
+			return false;
+		}
+		public async Task<bool> UpdateColor(ProductColor color)
+		{
+			if(color == null) throw new ArgumentNullException(nameof(color));
+			var result = await _colorRepository.Update(color);
+			if(result != null) return true;
+			return false;
+		}
+		public async Task<bool> DeleteColor(ProductColor color)
+		{
+			if(color == null) throw new ArgumentNullException(nameof(color));
+			return await _colorRepository.Delete(color);
+		}
+		public async Task<bool> AddSize(ProductSize size)
+		{
+			if(size == null) throw new ArgumentNullException(nameof(size));
+			var result = await _sizeRepository.Add(size);
+			if(result != null) return true;
+			return false;
+		}
+		public async Task<bool> UpdateSize(ProductSize size)
+		{
+			if(size == null) throw new ArgumentNullException(nameof(size));
+			var result = await _sizeRepository.Update(size);
+			if(result != null) return true;
+			return false;
+		}
+		public async Task<bool> DeleteSize(ProductSize size)
+		{
+			if (size == null) throw new ArgumentNullException(nameof(size));
+			return await _sizeRepository.Delete(size);
+		}	
+		
 		// Private mehods
-
-
-
 	}
 }
