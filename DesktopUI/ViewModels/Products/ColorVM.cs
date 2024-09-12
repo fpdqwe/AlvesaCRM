@@ -1,21 +1,41 @@
 ﻿using DesktopUI.Utilities;
-using Domain.Entities.Product;
+using Model = DesktopUI.Models.ProductModel;
+using Color = Domain.Entities.Product.ProductColor;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace DesktopUI.ViewModels.Products
 {
     public class ColorVM : BaseViewModel
     {
-        private ObservableCollection<ProductColor> _colors;
 
-        public ObservableCollection<ProductColor> Colors
+        private Color _color;
+        private Model _model;
+        public Color Color
         {
-            get => _colors;
+            get => _color;
             set
             {
-                _colors = value;
-                OnPropertyChanged(nameof(Colors));
+                OnPropertyChanged(nameof(Color));
             }
         }
-    }
+
+        public ColorVM(Color color)
+        {
+            _color = color;
+            _model = new Model();
+        }
+
+		public ICommand UpdateColorCommand { get; set; }
+		public ICommand DeleteColorCommand { get; set; }
+
+		public async void UpdateColor(object parameter)
+		{
+			await _model.UpdateColor(Color);
+		}
+		public async void DeleteColor(object parameter)
+		{
+			await _model.DeleteColor(Color);
+		}
+	}
 }

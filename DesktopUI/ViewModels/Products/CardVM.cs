@@ -7,6 +7,7 @@ using Domain.Entities.Product;
 using DesktopUI.Utilities.Services;
 using System.Windows.Input;
 using DesktopUI.Commands;
+using System.Windows.Media;
 
 namespace DesktopUI.ViewModels.Products
 {
@@ -18,6 +19,7 @@ namespace DesktopUI.ViewModels.Products
 		private TechSpec _selectedTechSpec;
 		private ProductColor _selectedColor;
 		private ProductSize _selectedSize;
+		private ObservableCollection<ColorVM> _colors;
 		//Properties
 		public string Name
 		{
@@ -55,6 +57,15 @@ namespace DesktopUI.ViewModels.Products
 				OnPropertyChanged(nameof(TechSpecs));
 			}
 		}
+		public ObservableCollection<ColorVM> Colors
+		{
+			get => _colors;
+			set
+			{
+				_colors = value;
+				OnPropertyChanged(nameof(Colors));
+			}
+		}
 		public TechSpec SelectedTechSpec
 		{
 			get => _selectedTechSpec;
@@ -62,6 +73,7 @@ namespace DesktopUI.ViewModels.Products
 			{
 				_selectedTechSpec = value;
 				OnPropertyChanged(nameof(SelectedTechSpec));
+				Colors = ConvertToColorVMs(_selectedTechSpec.Colors);
 			}
 		}
 		public ProductColor SelectedColor
@@ -69,8 +81,10 @@ namespace DesktopUI.ViewModels.Products
 			get => _selectedColor;
 			set
 			{
+				if(_selectedColor != null && _selectedColor.Equals(value)) return;
 				_selectedColor = value;
 				OnPropertyChanged(nameof(SelectedColor));
+				CheckQuantity();
 			}
 		}
 		public ProductSize SelectedSize
@@ -86,8 +100,7 @@ namespace DesktopUI.ViewModels.Products
 		// Ctors
         public CardVM()
         {
-			_model = new Model();
-			_product = ProductService.Current;
+			Initialize();
 			Debug.WriteLine("CardVM initialized");
 			ProductService.CurrentChangedEvent += OnCurrentChanged;
 			
@@ -108,33 +121,33 @@ namespace DesktopUI.ViewModels.Products
 		public ICommand AddColorCommand { get; set; }
 		public ICommand UpdateColorCommand { get; set; }
 		public ICommand DeleteColorCommand { get; set; }
+		public ICommand UpdateColorsCommand { get; set; }
 		public ICommand AddSizeCommand { get; set; }
 		public ICommand UpdateSizeCommand { get; set; }
 		public ICommand DeleteSizeCommand { get; set; }
-		private void AddTechSpec(object parameter)
+		public ICommand UpdateSizesCommand { get; set; }
+		private async void AddTechSpec(object parameter)
 		{
-			ProductSize size = new ProductSize();
-			ProductColor color = new ProductColor();
-			color.Sizes = new List<ProductSize>() { size };
-			size.Color = color;
-			size.ColorId = color.Id;
-			TechSpec techSpec = new TechSpec();
-			techSpec.Colors = new List<ProductColor>() { color };
-			color.TechSpec = techSpec;
-			color.TechSpecId = techSpec.Id;
-			
+			await _model.AddTechSpec(_product);
+			OnPropertyChanged(nameof(TechSpecs));
 		}
-		public void CopyTechSpec(object parameter)
+		public async void CopyTechSpec(object parameter)
 		{
-			
+			await _model.AddTechSpec(_product, SelectedTechSpec);
 		}
 		public async void AddColor(object parameter)
 		{
 			var newColor = GenerateNewColor();
-			newColor.TechSpec = SelectedTechSpec;
-			await _model.AddColor(newColor);
-			SelectedColor = newColor;
-			SelectedSize = null;
+			newColor.TechSpecId = SelectedTechSpec.Id;
+			if (await _model.AddColor(newColor))
+			{
+				newColor.TechSpec = SelectedTechSpec;
+				SelectedColor = newColor;
+				SelectedSize = null;
+				var newColorList = SelectedTechSpec.Colors;
+				SelectedTechSpec.Colors = newColorList;
+				OnPropertyChanged(nameof(TechSpecs));
+			}
 		}
 		public async void UpdateColor(object parameter)
 		{
@@ -144,14 +157,25 @@ namespace DesktopUI.ViewModels.Products
 		{
 			await _model.DeleteColor(SelectedColor);
 		}
+		public async void UpdateColors(object parameter)
+		{
+			foreach(var color in SelectedTechSpec.Colors)
+			{
+				await _model.UpdateColor(color);
+			}
+		}
 		public async void AddSize(object parameter)
 		{
 			var newSize = GenerateNewSize();
-			newSize.Color = SelectedColor;
-			var newSizeArray = SelectedColor.Sizes;
-			newSizeArray.Add(newSize);
-			SelectedColor.Sizes = newSizeArray;
-			await _model.AddSize(newSize);
+			newSize.ColorId = SelectedColor.Id;
+			if (await _model.AddSize(newSize))
+			{
+				newSize.Color = SelectedColor;
+				var newSizeArray = SelectedColor.Sizes;
+				newSizeArray.Add(newSize);
+				SelectedColor.Sizes = newSizeArray;
+				OnPropertyChanged(nameof(SelectedColor));
+			}
 		}
 		public async void UpdateSize(object parameter)
 		{
@@ -160,6 +184,13 @@ namespace DesktopUI.ViewModels.Products
 		public async void DeleteSize(object parameter)
 		{
 			await _model.DeleteSize(SelectedSize);
+		}
+		public async void UpdateSizes(object parameter)
+		{
+			foreach(var size in SelectedColor.Sizes)
+			{
+				await _model.UpdateSize(size);
+			}
 		}
 		// Private methods
 		private void OnCurrentChanged(Product product)
@@ -170,7 +201,6 @@ namespace DesktopUI.ViewModels.Products
 			OnPropertyChanged(nameof(Description));
 			OnPropertyChanged(nameof(ModelNumber));
 		}
-
 		private ProductColor GenerateNewColor()
 		{
 			var result = new ProductColor() {
@@ -191,6 +221,15 @@ namespace DesktopUI.ViewModels.Products
 			};
 			return result;
 		}
+		private ObservableCollection<ColorVM> ConvertToColorVMs(List<ProductColor> colors)
+		{
+			var result = new ObservableCollection<ColorVM>();
+			foreach (var color in colors)
+			{
+				result.Add(new ColorVM(color));
+			}
+			return result;
+		}
 		private void SetCommands()
 		{
 			AddTechSpecCommand = new RelayCommand(AddTechSpec);
@@ -202,6 +241,27 @@ namespace DesktopUI.ViewModels.Products
 			AddSizeCommand = new RelayCommand(AddSize);
 			UpdateSizeCommand = new RelayCommand(UpdateSize);
 			DeleteSizeCommand = new RelayCommand(DeleteSize);
+			UpdateSizesCommand = new RelayCommand(UpdateSizes);
+			UpdateColorsCommand = new RelayCommand(UpdateColors);
+		}
+		private void Initialize()
+		{
+			if(_model == null) _model = new Model();
+			_product = ProductService.Current;
+		}
+		private void CheckQuantity()
+		{
+			int summ = 0;
+			if (SelectedColor == null) return;
+			foreach(var size in SelectedColor.Sizes)
+			{
+				summ += size.Quantity;
+			}
+			if(SelectedColor.TotalQuantity != summ)
+			{
+				SelectedColor.TotalQuantity = summ;
+				UpdateColor(SelectedColor);
+			}
 		}
 	}
 }
