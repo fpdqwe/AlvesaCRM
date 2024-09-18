@@ -226,7 +226,7 @@ namespace DesktopUI.ViewModels.Products
 			var result = new ObservableCollection<ColorVM>();
 			foreach (var color in colors)
 			{
-				result.Add(new ColorVM(color));
+				result.Add(new ColorVM(color, _model));
 			}
 			return result;
 		}

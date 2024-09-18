@@ -148,8 +148,28 @@ namespace DesktopUI.Models
 		{
 			if (size == null) throw new ArgumentNullException(nameof(size));
 			return await _sizeRepository.Delete(size);
-		}	
-		
-		// Private mehods
+		}
+		public ProductColor GenerateNewColor()
+		{
+			var result = new ProductColor()
+			{
+				Name = string.Empty,
+				TotalQuantity = 0,
+				Composition = string.Empty
+			};
+			result.Sizes = new List<ProductSize> { GenerateNewSize(result) };
+			return result;
+		}
+		public ProductSize GenerateNewSize(ProductColor parent)
+		{
+			var result = new ProductSize()
+			{
+				Color = parent,
+				Name = string.Empty,
+				Barcode = string.Empty,
+				Quantity = 0,
+			};
+			return result;
+		}
 	}
 }

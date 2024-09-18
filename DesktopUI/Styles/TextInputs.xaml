@@ -12,9 +12,9 @@
             <ScrollViewer x:Name="PART_ContentHost"
                           Margin="10 0 0 0"
                           VerticalContentAlignment="Center"
-                          HorizontalContentAlignment="Left"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                           VerticalAlignment="Center"
-                          HorizontalAlignment="Left"/>
+                          HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled" Value="False">
@@ -38,10 +38,23 @@
         <Setter Property="Background" Value="{StaticResource SCB-Main}"/>
         <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
         <Setter Property="Margin" Value="5 10 5 10"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderThickness" Value="2"/>
         <Setter Property="Template" Value="{StaticResource TextBoxBaseControlTemplate}"/>
         <Setter Property="Width" Value="390"/>
-        
+    </Style>
+
+    <Style x:Key="TableTextInput" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="{StaticResource SCB-Content}"/>
+        <Setter Property="Background" Value="{StaticResource SCB-Main}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource SCB-Background}"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Template" Value="{StaticResource TextBoxBaseControlTemplate}"/>
     </Style>
 
     <Style x:Key="DataGridCellText" TargetType="TextBox">

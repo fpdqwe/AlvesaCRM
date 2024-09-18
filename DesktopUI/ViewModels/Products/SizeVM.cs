@@ -1,4 +1,5 @@
-﻿using DesktopUI.Utilities;
+﻿using DesktopUI.Commands;
+using DesktopUI.Utilities;
 using Domain.Entities.Product;
 using System.Windows.Input;
 using Model = DesktopUI.Models.ProductModel;
@@ -7,6 +8,10 @@ namespace DesktopUI.ViewModels.Products
 {
 	public class SizeVM : BaseViewModel
 	{
+		public delegate void SizeEventHandler(SizeVM size);
+		public event SizeEventHandler SizeUpdated;
+		public event SizeEventHandler SizeDeleted;
+		// Fields
 		private ProductSize _size;
 		private Model _model;
 		private int _index;
@@ -38,6 +43,7 @@ namespace DesktopUI.ViewModels.Products
 			_index = i;
 			_size = size;
 			_model = model;
+			InitCommands();
         }
 
 		// Commands
@@ -47,11 +53,18 @@ namespace DesktopUI.ViewModels.Products
 		public async void UpdateSize(object parameter)
 		{
 			await _model.UpdateSize(Size);
+			SizeUpdated?.Invoke(this);
 		}
 		public async void DeleteSize(object parameter)
 		{
 			await _model.DeleteSize(Size);
+			SizeDeleted?.Invoke(this);
 		}
 		// Private methods
+		private void InitCommands()
+		{
+			UpdateSizeCommand = new RelayCommand(UpdateSize);
+			DeleteSizeCommand = new RelayCommand(DeleteSize);
+		}
 	}
 }

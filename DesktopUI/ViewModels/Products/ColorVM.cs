@@ -4,6 +4,7 @@ using Color = Domain.Entities.Product.ProductColor;
 using Size = Domain.Entities.Product.ProductSize;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using DesktopUI.Commands;
 
 namespace DesktopUI.ViewModels.Products
 {
@@ -54,18 +55,25 @@ namespace DesktopUI.ViewModels.Products
             }
         }
         // Ctors
-        public ColorVM(Color color)
+        public ColorVM(Color color, Model model)
         {
             _color = color;
-            _sizes = GetSizeCollection(color.Sizes);
-            _model = new Model();
+            _model = model;
+			_sizes = GetSizeCollection(color.Sizes);
         }
 
         // Commands
+        public ICommand AddSizeCommand { get; set; }
 		public ICommand UpdateColorCommand { get; set; }
 		public ICommand DeleteColorCommand { get; set; }
 
         // Commands realization
+        private async void AddSize(object parameter)
+        {
+            var newSize = _model.GenerateNewSize(Color);
+            await _model.AddSize(newSize);
+            Sizes.Add(new SizeVM(newSize, _model, Sizes.Count));
+        }
 		private async void UpdateColor(object parameter)
 		{
 			await _model.UpdateColor(Color);
@@ -76,13 +84,33 @@ namespace DesktopUI.ViewModels.Products
 		}
 
 		// Private methods and utilities
+        private void OnSizeUpdated(SizeVM size)
+        {
+            OnPropertyChanged(nameof(Sizes));
+        }
+        private void OnSizeDeleted(SizeVM size)
+        {
+            Sizes.RemoveAt(size.Index - 1);
+            OnPropertyChanged(nameof(Sizes));
+            size.SizeDeleted -= OnSizeDeleted;
+            size.SizeUpdated -= OnSizeUpdated;
+        }
+        private void InitCommands()
+        {
+            AddSizeCommand = new RelayCommand(AddSize);
+            UpdateColorCommand = new RelayCommand(UpdateColor);
+            DeleteColorCommand = new RelayCommand(DeleteColor);
+        }
 		private ObservableCollection<SizeVM> GetSizeCollection(List<Size> sizes)
 		{
 			var result = new ObservableCollection<SizeVM>();
             int i = 1;
 			foreach (var size in sizes)
 			{
-				result.Add(new SizeVM(size, _model, i));
+                var newVM = new SizeVM(size, _model, i);
+                newVM.SizeDeleted += OnSizeDeleted;
+                newVM.SizeUpdated += OnSizeUpdated;
+				result.Add(newVM);
                 i++;
 			}
 			return result;
