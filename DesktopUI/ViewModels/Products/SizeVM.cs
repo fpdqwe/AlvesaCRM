@@ -8,9 +8,9 @@ namespace DesktopUI.ViewModels.Products
 {
 	public class SizeVM : BaseViewModel
 	{
-		public delegate void SizeEventHandler(SizeVM size);
-		public event SizeEventHandler SizeUpdated;
-		public event SizeEventHandler SizeDeleted;
+		public delegate void SizeEvent(SizeVM size);
+		public event SizeEvent SizeUpdated;
+		public event SizeEvent SizeDeleted;
 		// Fields
 		private ProductSize _size;
 		private Model _model;

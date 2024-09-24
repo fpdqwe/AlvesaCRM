@@ -11,5 +11,15 @@ namespace DesktopUI.Views.CustomControls.Products
 		{
 			InitializeComponent();
 		}
+
+		private void ShowColorDetails_Checked(object sender, System.Windows.RoutedEventArgs e)
+		{
+			
+        }
+
+		private void ShowColorDetails_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+		{
+
+		}
 	}
 }

@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:DesktopUI.Views.CustomControls.Products"
              xmlns:vm="clr-namespace:DesktopUI.ViewModels.Products"
+             xmlns:utils="clr-namespace:DesktopUI.Utilities.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="1000" d:DesignWidth="1400">
     <UserControl.Resources>
@@ -14,6 +15,7 @@
         <DataTemplate DataType="{x:Type vm:SizeVM}">
             
         </DataTemplate>
+        <utils:MaxHeightConverter x:Key="MaxHeightConverter"/>
     </UserControl.Resources>
     <UserControl.DataContext>
         <vm:CardVM/>
@@ -99,10 +101,12 @@
                                    Margin="5 0"/>
                     </StackPanel>
                 </TabItem.Header>
-                <ScrollViewer HorizontalScrollBarVisibility="Hidden"
-                              VerticalScrollBarVisibility="Hidden">
-                <StackPanel>
-                    <Grid Name="TabItemHeader"
+                <Grid x:Name="TechSpecRootGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid Name="TechSpecHeader"
                           Grid.Row="0"
                           Height="60">
                         <Grid.ColumnDefinitions>
@@ -145,13 +149,16 @@
                              Style="{StaticResource StrictListBox}"
                              SelectedIndex="0"
                              Grid.Row="1"
+                             MaxHeight="{Binding ElementName=TechSpecRootGrid, 
+                                Path=ActualHeight, 
+                                Converter={StaticResource ResourceKey=MaxHeightConverter}}"
+                             Name="TechSpecListBox"
                              >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
+                                        <RowDefinition Height="60"/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
 
@@ -159,11 +166,10 @@
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition/>
                                             <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
                                         </Grid.ColumnDefinitions>
                                         <StackPanel Orientation="Horizontal"
-                                                    Grid.Column="0">
+                                                    Grid.Column="0"
+                                                    HorizontalAlignment="Left">
                                             <TextBlock Style="{StaticResource ArticleText}"
                                                        Text="ТЗ № "
                                                        Grid.Column="0"
@@ -176,234 +182,205 @@
                                             <TextBlock Style="{StaticResource ArticleText}"
                                                        Text="{Binding StartDate}"/>
                                         </StackPanel>
-                                        <TextBlock Style="{StaticResource ArticleText}"
-                                                   Text="Содеражние"
-                                                   Grid.Column="2"/>
-                                        <TextBlock Style="{StaticResource ArticleText}"
-                                                   Text="Кол-во:"
-                                                   Grid.Column="3"/>
-                                        <TextBlock Style="{StaticResource ArticleText}"
-                                                   Text="{Binding Amount}"
-                                                   Grid.Column="4"/>
+                                        <StackPanel Orientation="Horizontal"
+                                                    Grid.Column="1"
+                                                    HorizontalAlignment="Center">
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                       Text="Завершено"
+                                                       Margin="5"/>
+                                            <CheckBox IsChecked="{Binding IsCompleted, Mode=TwoWay}"
+                                                      VerticalAlignment="Center"
+                                                      Margin="5"/>
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                       Text="Общее кол-во: "
+                                                       Margin="5"/>
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                       Text="{Binding TotalQuantity}"
+                                                       Margin="5"/>
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                     Text="Стоимость"
+                                                     Margin="5"/>
+                                            <TextBox Style="{StaticResource DefaultTextInput}"
+                                                     Text="{Binding Price}"
+                                                     Margin="5 10"/>
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                       Text="Стоимость производства"
+                                                       Margin="5"/>
+                                            <TextBlock Style="{StaticResource ArticleText}"
+                                                       Text="{Binding ProductionPrice}"
+                                                       Margin="5 5 20 5"/>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <Grid Grid.Row="1"
+                                          x:Name="ColorsRootGrid">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="50"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        
+                                        <Border Background="{StaticResource SCB-Main}"
+                                                Grid.Row="0"/>
+                                        <TextBlock Grid.Row="0"
+                                                   Style="{StaticResource ArticleText}"
+                                                   Text="Цвета"/>
+                                        <Button Style="{StaticResource IsolatedBtn}"
+                                                Command="{Binding AddColorCommand}"
+                                                Content="+color"
+                                                HorizontalAlignment="Right"
+                                                Width="200"
+                                                Margin="0 5 10 5"/>
+                                        <ToggleButton Name="ShowColorDetails"
+                                                      Content="{Binding VisibilityBtnContent}"
+                                                      IsChecked="{Binding IsContentVisible}"
+                                                      Margin="0 5 220 5"
+                                                      HorizontalAlignment="Right"
+                                                      Width="200"
+                                                      />
+                                        
+                                        <ListBox ItemsSource="{Binding Colors}"
+                                                 Style="{StaticResource StrictListBox}"
+                                                 SelectedItem="{Binding SelectedColor}"
+                                                 SelectedIndex="0"
+                                                 ScrollViewer.VerticalScrollBarVisibility="Visible"
+                                                 ScrollViewer.CanContentScroll="True"
+                                                 Grid.Row="1"
+                                                 MaxHeight="{Binding ElementName=TechSpecListBox,
+                                                    Path=MaxHeight}"
+                                                 Name="ColorsListBox"
+                                                 Visibility="{Binding IsContentVisibleState}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Margin="25 0 0 0">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="2*"/>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                            <ColumnDefinition/>
+                                                            <ColumnDefinition Width="1*"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="40"/>
+                                                            <RowDefinition/>
+                                                        </Grid.RowDefinitions>
+
+                                                        <TextBlock Style="{StaticResource DefaultText}"
+                                                                   Text="Цвет: "
+                                                                   Grid.Column="0"/>
+
+                                                        <TextBox Style="{StaticResource TableTextInput}"
+                                                                 Text="{Binding Color.Name, Mode=TwoWay}"
+                                                                 Margin="5"
+                                                                 Grid.Column="1"/>
+                                                        
+                                                        <TextBlock Style="{StaticResource DefaultText}"
+                                                                   Text="Количество в цвете: "
+                                                                   Grid.Column="2"/>
+                                                        
+                                                        <TextBlock Style="{StaticResource DefaultText}"
+                                                                   Text="{Binding Color.TotalQuantity, Mode=TwoWay}"
+                                                                   HorizontalAlignment="Left"
+                                                                   Margin="5"
+                                                                   Grid.Column="3"/>
+
+                                                        <TextBlock Style="{StaticResource DefaultText}"
+                                                                   Text="Состав: "
+                                                                   Grid.Column="4"/>
+                                                        
+                                                        <TextBox Style="{StaticResource TableTextInput}"
+                                                                 Text="{Binding Color.Composition, Mode=TwoWay}"
+                                                                 Grid.Column="5"/>
+
+                                                        <StackPanel Orientation="Horizontal" Grid.Column="6">
+                                                            <Button Style="{StaticResource IsolatedBtn}"
+                                                                    Content="+size"
+                                                                    Margin="2"
+                                                                    Command="{Binding AddSizeCommand}"/>
+                                                            <Button Style="{StaticResource IsolatedBtn}"
+                                                                    Content="save"
+                                                                    Margin="2"
+                                                                    Command="{Binding UpdateColorCommand}"/>
+                                                            <Button Style="{StaticResource IsolatedBtn}"
+                                                                    Command="{Binding DeleteColorCommand}"
+                                                                    Margin="2"
+                                                                    Content="del"/>
+                                                        </StackPanel>
+
+                                                        <Border Style="{StaticResource VerticalLine}"
+                                                                Grid.RowSpan="2" Margin="-50 0 0 0"/>
+
+                                                        <Border Style="{StaticResource VerticalLine}"
+                                                                Margin="5"
+                                                                Grid.ColumnSpan="7"
+                                                                Grid.Row="1">
+                                                            <ListBox ItemsSource="{Binding Sizes}"
+                                                                     SelectedItem="{Binding SelectedSize}">
+                                                                <ListBox.ItemTemplate>
+                                                                    <DataTemplate>
+                                                                        <Grid Height="40">
+                                                                            <Grid.ColumnDefinitions>
+                                                                                <ColumnDefinition Width="30"/>
+                                                                                <ColumnDefinition Width="25"/>
+                                                                                <ColumnDefinition Width="100"/>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="100"/>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="100"/>
+                                                                                <ColumnDefinition/>
+                                                                                <ColumnDefinition Width="50"/>
+                                                                                <ColumnDefinition Width="50"/>
+                                                                            </Grid.ColumnDefinitions>
+
+                                                                            <TextBlock Text="№"
+                                                                                       Margin="5"
+                                                                                       Grid.Column="0"
+                                                                                       Style="{StaticResource DefaultText}"/>
+                                                                            <TextBlock Text="{Binding Index}"
+                                                                                       Grid.Column="1"
+                                                                                       Style="{StaticResource DefaultText}"/>
+                                                                            <TextBlock Text="Штрихкод: "
+                                                                                       Grid.Column="2"
+                                                                                       Style="{StaticResource DefaultText}"/>
+                                                                            <TextBox Text="{Binding Size.Barcode, Mode=TwoWay}"
+                                                                                     Grid.Column="3"
+                                                                                     Style="{StaticResource TableTextInput}"/>
+                                                                            <TextBlock Style="{StaticResource DefaultText}"
+                                                                                       Text="Название: "
+                                                                                       Grid.Column="4"/>
+                                                                            <TextBox Text="{Binding Size.Name, Mode=TwoWay}"
+                                                                                     Grid.Column="5"
+                                                                                     Style="{StaticResource TableTextInput}"/>
+                                                                            <TextBlock Text="Кол-во:"
+                                                                                       Grid.Column="6"
+                                                                                       Style="{StaticResource DefaultText}"/>
+                                                                            <TextBox Style="{StaticResource TableTextInput}"
+                                                                                     Grid.Column="7"
+                                                                                     Text="{Binding Size.Quantity}"/>
+                                                                            <Button Style="{StaticResource IsolatedBtn}"
+                                                                                    Content="save"
+                                                                                    Grid.Column="8"
+                                                                                    Command="{Binding UpdateSizeCommand}"/>
+                                                                            <Button Style="{StaticResource IsolatedBtn}"
+                                                                                    Content="del"
+                                                                                    Grid.Column="9"
+                                                                                    Command="{Binding DeleteSizeCommand}"/>
+                                                                        </Grid>
+                                                                    </DataTemplate>
+                                                                </ListBox.ItemTemplate>
+                                                            </ListBox>
+                                                        </Border>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
                                     </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    
-                    <Grid Grid.Row="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Border Background="{StaticResource SCB-Main}"
-                                Grid.Row="0"/>
-                        <TextBlock Grid.Row="0"
-                                   Style="{StaticResource ArticleText}"
-                                   Text="Цвета"/>
-                        <Button Style="{StaticResource IsolatedBtn}"
-                                Command="{Binding UpdateColorsCommand}"
-                                Content="Сохранить"
-                                HorizontalAlignment="Right"
-                                Width="200"
-                                Margin="0 5 10 5"/>
-                        <ListBox ItemsSource="{Binding Colors}"
-                                 Style="{StaticResource StrictListBox}"
-                                 SelectedItem="{Binding SelectedColor}"
-                                 SelectedIndex="0"
-                                 Grid.Row="1">
-                            
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="25 0 0 0">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition Width="100"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition/>
-                                            <RowDefinition/>
-                                        </Grid.RowDefinitions>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Grid.Column="0">
-                                            <TextBlock Style="{StaticResource DefaultText}"
-                                                        Text="Цвет: "
-                                                        />
-                                            <TextBox Style="{StaticResource TableTextInput}"
-                                                        Text="{Binding Color.Name, Mode=TwoWay}"
-                                                        HorizontalAlignment="Left"
-                                                        Margin="5"
-                                                        />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Grid.Column="1">
-                                            <TextBlock Style="{StaticResource DefaultText}"
-                                                        Text="Количество в цвете: "
-                                                        />
-                                            <TextBlock Style="{StaticResource DefaultText}"
-                                                        Text="{Binding Color.TotalQuantity, Mode=TwoWay}"
-                                                        HorizontalAlignment="Right"
-                                                        Margin="5"
-                                                        />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal"
-                                                    Grid.Column="2">
-                                            <TextBlock Style="{StaticResource DefaultText}"
-                                                        Text="Состав: "/>
-                                            <TextBox Style="{StaticResource TableTextInput}"
-                                                        Text="{Binding Color.Composition, Mode=TwoWay}"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal" Grid.Column="3">
-                                            <Button Style="{StaticResource IsolatedBtn}"
-                                                    Content="+size"
-                                                    Margin="2"
-                                                    Command="{Binding AddSizeCommand}"/>
-                                            <Button Style="{StaticResource IsolatedBtn}"
-                                                    Content="save"
-                                                    Margin="2"
-                                                    Command="{Binding UpdateColorCommand}"/>
-                                            <Button Style="{StaticResource IsolatedBtn}"
-                                                    Command="{Binding DeleteColorCommand}"
-                                                    Margin="2"
-                                                    Content="del"/>
-                                        </StackPanel>
-
-                                        <Border Style="{StaticResource VerticalLine}"
-                                        Grid.RowSpan="2" Margin="-50 0 0 0"/>
-
-                                        <Border Style="{StaticResource VerticalLine}"
-                                                Margin="5"
-                                                Grid.ColumnSpan="4"
-                                                Grid.Row="1">
-                                            <ListBox ItemsSource="{Binding Sizes}"
-                                                     SelectedItem="{Binding SelectedSize}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Height="50">
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="20"/>
-                                                                <ColumnDefinition Width="25"/>
-                                                                <ColumnDefinition Width="100"/>
-                                                                <ColumnDefinition/>
-                                                                <ColumnDefinition Width="100"/>
-                                                                <ColumnDefinition/>
-                                                                <ColumnDefinition Width="100"/>
-                                                                <ColumnDefinition/>
-                                                                <ColumnDefinition Width="50"/>
-                                                                <ColumnDefinition Width="50"/>
-                                                            </Grid.ColumnDefinitions>
-
-                                                            <TextBlock Text="№"
-                                                                       Grid.Column="0"
-                                                                       Style="{StaticResource DefaultText}"/>
-                                                            <TextBlock Text="{Binding Index}"
-                                                                       Grid.Column="1"
-                                                                       Style="{StaticResource DefaultText}"/>
-                                                            <TextBlock Text="Штрихкод: "
-                                                                       Grid.Column="2"
-                                                                       Style="{StaticResource DefaultText}"/>
-                                                            <TextBox Text="{Binding Size.Barcode, Mode=TwoWay}"
-                                                                     Grid.Column="3"
-                                                                     Style="{StaticResource TableTextInput}"/>
-                                                            <TextBlock Style="{StaticResource DefaultText}"
-                                                                       Text="Название: "
-                                                                       Grid.Column="4"/>
-                                                            <TextBox Text="{Binding Size.Name, Mode=TwoWay}"
-                                                                     Grid.Column="5"
-                                                                     Style="{StaticResource TableTextInput}"/>
-                                                            <TextBlock Text="Кол-во:"
-                                                                       Grid.Column="6"
-                                                                       Style="{StaticResource DefaultText}"/>
-                                                            <TextBox Style="{StaticResource TableTextInput}"
-                                                                     Grid.Column="7"
-                                                                     Text="{Binding Size.Quantity}"/>
-                                                            <Button Style="{StaticResource IsolatedBtn}"
-                                                                    Content="save"
-                                                                    Grid.Column="8"
-                                                                    Command="{Binding UpdateSizeCommand}"/>
-                                                            <Button Style="{StaticResource IsolatedBtn}"
-                                                                    Content="del"
-                                                                    Grid.Column="9"
-                                                                    Command="{Binding DeleteSizeCommand}"/>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                        </Border>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                    <!--
-                    <Grid Grid.Row="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Border Background="{StaticResource SCB-Main}"
-                                Grid.Row="0"/>
-                        <TextBlock Text="Размеры"
-                                   Style="{StaticResource ArticleText}"
-                                   Grid.Row="0"/>
-                        <Button Style="{StaticResource IsolatedBtn}"
-                                Command="{Binding UpdateSizesCommand}"
-                                Content="Сохранить"
-                                Width="200"
-                                HorizontalAlignment="Right"
-                                Margin="0 5 10 5"/>
-
-                        <ListBox ItemsSource="{Binding SelectedColor.Sizes}"
-                             Style="{StaticResource StrictListBox}"
-                             SelectedIndex="0"
-                             SelectedItem="{Binding SelectedSize}"
-                             Grid.Row="1">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Height="50">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40"/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="ID: "
-                                               Style="{StaticResource ArticleText}"/>
-                                        <TextBlock Text="{Binding Id}"
-                                               Style="{StaticResource ArticleText}"
-                                               Grid.Column="1"/>
-                                        <TextBlock Text="Штрихкод: "
-                                               Style="{StaticResource ArticleText}"
-                                               Grid.Column="2"/>
-                                        <TextBox Grid.Column="3"
-                                             Text="{Binding Barcode}"
-                                             Style="{StaticResource DefaultTextInput}"/>
-                                        <TextBlock Grid.Column="4"
-                                               Style="{StaticResource ArticleText}"
-                                               Text="Название: "/>
-                                        <TextBox Grid.Column="5"
-                                             Text="{Binding Name}"
-                                             Style="{StaticResource DefaultTextInput}"/>
-                                        <TextBlock Grid.Column="6"
-                                             Text="Кол-во:"
-                                             Style="{StaticResource ArticleText}"/>
-                                        <TextBox Grid.Column="7"
-                                             Style="{StaticResource DefaultTextInput}"
-                                             Text="{Binding Quantity}"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                    -->
-                </StackPanel>
-                </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Name="TpoEdit"
                      Width="280"

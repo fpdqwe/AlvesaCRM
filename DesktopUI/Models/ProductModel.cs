@@ -110,7 +110,13 @@ namespace DesktopUI.Models
 			}
 			return result;
 		}
-
+		public async Task<bool> UpdateTechSpec(TechSpec techSpec)
+		{
+			if (techSpec == null) { throw new ArgumentNullException(nameof(techSpec)); }
+			var result = await _techSpecRepository.Update(techSpec);
+			if (result != null) return true;
+			return false;
+		}
 		public async Task<bool> AddColor(ProductColor color)
 		{
 			if(color == null) throw new ArgumentNullException(nameof(color));
@@ -149,22 +155,51 @@ namespace DesktopUI.Models
 			if (size == null) throw new ArgumentNullException(nameof(size));
 			return await _sizeRepository.Delete(size);
 		}
-		public ProductColor GenerateNewColor()
+		public async Task<ProductColor> GenerateNewColor(TechSpec parent, ProductColor reference = null)
 		{
-			var result = new ProductColor()
+			if (reference == null)
 			{
-				Name = string.Empty,
-				TotalQuantity = 0,
-				Composition = string.Empty
-			};
-			result.Sizes = new List<ProductSize> { GenerateNewSize(result) };
-			return result;
+				var result = new ProductColor()
+				{
+					Name = string.Empty,
+					TotalQuantity = 0,
+					Composition = string.Empty,
+					TechSpecId = parent.Id
+				};
+				result.Sizes = new List<ProductSize> { GenerateNewSize(result) };
+				return result;
+			}
+			else
+			{
+				var result = new ProductColor()
+				{
+					Name = reference.Name,
+					TotalQuantity = reference.TotalQuantity,
+					Composition = reference.Composition,
+					TechSpecId = parent.Id
+				};
+				var savedColor = await _colorRepository.Add(result);
+				savedColor.Sizes = new List<ProductSize>(reference.Sizes.Count);
+				foreach(var size in reference.Sizes)
+				{
+					var savedSize = await _sizeRepository.Add(new ProductSize()
+					{
+						Name = size.Name,
+						Id = 0,
+						Barcode = size.Barcode,
+						ColorId = savedColor.Id,
+						Quantity = size.Quantity,
+					});
+					savedColor.Sizes.Add(savedSize);
+				}
+				return savedColor;
+			}
 		}
 		public ProductSize GenerateNewSize(ProductColor parent)
 		{
 			var result = new ProductSize()
 			{
-				Color = parent,
+				ColorId = parent.Id,
 				Name = string.Empty,
 				Barcode = string.Empty,
 				Quantity = 0,

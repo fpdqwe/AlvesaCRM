@@ -16,6 +16,11 @@ namespace DesktopUI.ViewModels.Products
         private SizeVM _selectedSize;
         private Model _model;
         private int _index;
+        private bool _isContentVisible = false;
+
+        public delegate void ColorEvent(ColorVM color);
+        public event ColorEvent ColorUpdated;
+        public event ColorEvent ColorDeleted;
 		// Properties
         public int Index
         {
@@ -54,12 +59,24 @@ namespace DesktopUI.ViewModels.Products
                 OnPropertyChanged(nameof(SelectedSize));
             }
         }
-        // Ctors
-        public ColorVM(Color color, Model model)
+        public bool IsContentVisible
         {
+            get => _isContentVisible;
+            set
+            {
+                _isContentVisible = value;
+                OnPropertyChanged(nameof(IsContentVisible));
+            }
+        }
+        // Ctors
+        public ColorVM(Color color, Model model, int index)
+        {
+            Index = index;
+            InitCommands();
             _color = color;
             _model = model;
-			_sizes = GetSizeCollection(color.Sizes);
+			_sizes = GetSizeVMCollection(color.Sizes);
+            CheckQuantity();
         }
 
         // Commands
@@ -71,16 +88,18 @@ namespace DesktopUI.ViewModels.Products
         private async void AddSize(object parameter)
         {
             var newSize = _model.GenerateNewSize(Color);
-            await _model.AddSize(newSize);
-            Sizes.Add(new SizeVM(newSize, _model, Sizes.Count));
+            if (!await _model.AddSize(newSize)) return;
+            Sizes.Add(new SizeVM(newSize, _model, Sizes.Count + 1));
         }
 		private async void UpdateColor(object parameter)
 		{
 			await _model.UpdateColor(Color);
+            ColorUpdated?.Invoke(this);
 		}
 		private async void DeleteColor(object parameter)
 		{
 			await _model.DeleteColor(Color);
+            ColorDeleted?.Invoke(this);
 		}
 
 		// Private methods and utilities
@@ -101,7 +120,20 @@ namespace DesktopUI.ViewModels.Products
             UpdateColorCommand = new RelayCommand(UpdateColor);
             DeleteColorCommand = new RelayCommand(DeleteColor);
         }
-		private ObservableCollection<SizeVM> GetSizeCollection(List<Size> sizes)
+        private void CheckQuantity()
+        {
+            int summ = 0;
+            foreach(var size in Sizes)
+            {
+                summ += size.Size.Quantity;
+            }
+            if (Color.TotalQuantity != summ)
+            {
+                Color.TotalQuantity = summ;
+                _model.UpdateColor(Color);
+            }
+        }
+		private ObservableCollection<SizeVM> GetSizeVMCollection(List<Size> sizes)
 		{
 			var result = new ObservableCollection<SizeVM>();
             int i = 1;
@@ -115,5 +147,11 @@ namespace DesktopUI.ViewModels.Products
 			}
 			return result;
 		}
+
+        // Public methods
+        public void AppendNewSize()
+        {
+            AddSize(null);
+        }
 	}
 }
